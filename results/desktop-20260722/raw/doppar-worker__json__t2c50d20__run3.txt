@@ -1,15 +1,15 @@
- Container doppar-bench-wrk-run-e56b7af51d9d Creating 
- Container doppar-bench-wrk-run-e56b7af51d9d Created 
+ Container doppar-bench-wrk-run-5a7c0539e7d0 Creating 
+ Container doppar-bench-wrk-run-5a7c0539e7d0 Created 
 Running 20s test @ http://frankenphp-doppar/json
   2 threads and 50 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    56.91ms  122.39ms 883.75ms   88.89%
-    Req/Sec     1.80k     0.90k    5.05k    71.50%
+    Latency    58.43ms  125.23ms 827.68ms   88.99%
+    Req/Sec     1.70k     0.92k    5.13k    69.75%
   Latency Distribution
-     50%   10.89ms
-     75%   20.54ms
-     90%  207.55ms
-     99%  584.95ms
-  71673 requests in 20.01s, 27.68MB read
-Requests/sec:   3582.27
-Transfer/sec:      1.38MB
+     50%   11.30ms
+     75%   22.10ms
+     90%  210.19ms
+     99%  600.84ms
+  67750 requests in 20.01s, 26.17MB read
+Requests/sec:   3385.76
+Transfer/sec:      1.31MB

@@ -1,0 +1,55 @@
+ Container doppar-bench-ab-run-1a076c4de7ab Creating 
+ Container doppar-bench-ab-run-1a076c4de7ab Created 
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking laravel-worker (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        FrankenPHP
+Server Hostname:        laravel-worker
+Server Port:            80
+
+Document Path:          /db
+Document Length:        177 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   4.311 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      20450000 bytes
+HTML transferred:       8850000 bytes
+Requests per second:    11598.19 [#/sec] (mean)
+Time per request:       86.220 [ms] (mean)
+Time per request:       0.086 [ms] (mean, across all concurrent requests)
+Transfer rate:          4632.48 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    3   4.1      1      18
+Processing:    14   83  17.3     80     159
+Waiting:        1   82  17.9     79     157
+Total:         18   85  15.4     81     159
+
+Percentage of the requests served within a certain time (ms)
+  50%     81
+  66%     87
+  75%     92
+  80%     95
+  90%    109
+  95%    117
+  98%    128
+  99%    132
+ 100%    159 (longest request)

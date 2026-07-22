@@ -1,0 +1,15 @@
+ Container doppar-bench-wrk-run-b2689453c9f3 Creating 
+ Container doppar-bench-wrk-run-b2689453c9f3 Created 
+Running 20s test @ http://laravel-worker/json
+  2 threads and 50 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     2.92ms    2.56ms 243.18ms   96.18%
+    Req/Sec     8.96k     1.37k   10.99k    67.25%
+  Latency Distribution
+     50%    2.54ms
+     75%    3.07ms
+     90%    4.02ms
+     99%    8.56ms
+  356611 requests in 20.01s, 88.42MB read
+Requests/sec:  17823.07
+Transfer/sec:      4.42MB

@@ -1,0 +1,55 @@
+ Container doppar-bench-ab-run-a3d9bfd80d5d Creating 
+ Container doppar-bench-ab-run-a3d9bfd80d5d Created 
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking symfony-worker (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        FrankenPHP
+Server Hostname:        symfony-worker
+Server Port:            80
+
+Document Path:          /db
+Document Length:        66 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   2.320 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      14850000 bytes
+HTML transferred:       3300000 bytes
+Requests per second:    21556.30 [#/sec] (mean)
+Time per request:       46.390 [ms] (mean)
+Time per request:       0.046 [ms] (mean, across all concurrent requests)
+Transfer rate:          6252.17 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   19   3.9     18      34
+Processing:     7   27   8.6     26     111
+Waiting:        1   20   7.9     19      93
+Total:         22   46   9.0     44     132
+
+Percentage of the requests served within a certain time (ms)
+  50%     44
+  66%     47
+  75%     50
+  80%     52
+  90%     57
+  95%     60
+  98%     65
+  99%     75
+ 100%    132 (longest request)

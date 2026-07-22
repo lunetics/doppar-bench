@@ -1,5 +1,5 @@
- Container doppar-bench-ab-run-511b86d27f27 Creating 
- Container doppar-bench-ab-run-511b86d27f27 Created 
+ Container doppar-bench-ab-run-e73b0215557d Creating 
+ Container doppar-bench-ab-run-e73b0215557d Created 
 This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -26,30 +26,30 @@ Document Path:          /json
 Document Length:        66 bytes
 
 Concurrency Level:      1000
-Time taken for tests:   10.286 seconds
+Time taken for tests:   9.800 seconds
 Complete requests:      50000
 Failed requests:        0
 Total transferred:      22150000 bytes
 HTML transferred:       3300000 bytes
-Requests per second:    4860.82 [#/sec] (mean)
-Time per request:       205.727 [ms] (mean)
-Time per request:       0.206 [ms] (mean, across all concurrent requests)
-Transfer rate:          2102.87 [Kbytes/sec] received
+Requests per second:    5102.06 [#/sec] (mean)
+Time per request:       195.999 [ms] (mean)
+Time per request:       0.196 [ms] (mean, across all concurrent requests)
+Transfer rate:          2207.24 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    0   1.6      0      16
-Processing:    18  198  67.5    193     767
-Waiting:        2  198  67.5    193     767
-Total:         18  198  67.0    193     767
+Connect:        0    0   2.0      0      22
+Processing:     6  189  61.7    190     622
+Waiting:        2  189  61.7    190     622
+Total:         24  189  61.1    190     622
 
 Percentage of the requests served within a certain time (ms)
-  50%    193
-  66%    227
-  75%    243
-  80%    252
-  90%    275
-  95%    303
-  98%    362
-  99%    399
- 100%    767 (longest request)
+  50%    190
+  66%    215
+  75%    236
+  80%    243
+  90%    267
+  95%    290
+  98%    303
+  99%    323
+ 100%    622 (longest request)

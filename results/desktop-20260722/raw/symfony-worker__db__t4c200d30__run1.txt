@@ -1,0 +1,15 @@
+ Container doppar-bench-wrk-run-9cc0067749fb Creating 
+ Container doppar-bench-wrk-run-9cc0067749fb Created 
+Running 30s test @ http://symfony-worker/db
+  4 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     5.04ms    1.82ms  46.56ms   84.50%
+    Req/Sec    10.05k     1.46k   12.57k    64.75%
+  Latency Distribution
+     50%    4.57ms
+     75%    5.58ms
+     90%    7.08ms
+     99%   12.02ms
+  1200757 requests in 30.03s, 296.59MB read
+Requests/sec:  39987.92
+Transfer/sec:      9.88MB
