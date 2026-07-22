@@ -1,0 +1,18 @@
+{
+	auto_https off
+	frankenphp {
+		worker {
+			# Symfony's official FrankenPHP integration: the worker IS the app's
+			# own public/index.php. Since Symfony 7.4 the worker loop is native in
+			# symfony/runtime (no extra package, no APP_RUNTIME override needed).
+			# 16 workers, matching the other worker stacks and pm.max_children.
+			file /var/www/html/public/index.php
+			num 16
+		}
+	}
+}
+
+:80 {
+	root /var/www/html/public
+	php_server
+}

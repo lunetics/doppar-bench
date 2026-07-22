@@ -68,6 +68,40 @@ services:
     ports:
       - "${BENCH_PORT_WORKER:-18020}:80"
 
+  # ---- Laravel (Octane + FrankenPHP worker) -----------------------------
+  # Laravel's first-party worker runtime (laravel/octane, --server=frankenphp).
+  # Same FrankenPHP base image as the other worker stacks; octane:frankenphp
+  # uses the frankenphp binary from that image (in PATH), 16 workers.
+  laravel-worker:
+    build:
+      context: ./docker/frankenphp
+    image: doppar-bench/frankenphp:latest
+    profiles: ["laravel-worker"]
+    restart: "no"
+    working_dir: /var/www/html
+    volumes:
+      - ./apps/laravel-worker:/var/www/html
+    command: ["frankenphp", "php-cli", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=80", "--workers=16", "--admin-port=2019"]
+    ports:
+      - "${BENCH_PORT_LARAVEL_WORKER:-18050}:80"
+
+  # ---- Symfony (FrankenPHP worker, native) ------------------------------
+  # Symfony's official FrankenPHP integration. Since Symfony 7.4 the worker loop
+  # is native in symfony/runtime — no extra package, no APP_RUNTIME override; the
+  # worker file is the app's own public/index.php. Same base image, 16 workers.
+  symfony-worker:
+    build:
+      context: ./docker/frankenphp
+    image: doppar-bench/frankenphp:latest
+    profiles: ["symfony-worker"]
+    restart: "no"
+    working_dir: /var/www/html
+    volumes:
+      - ./apps/symfony-worker:/var/www/html
+      - ./docker/frankenphp/Caddyfile-symfony:/etc/frankenphp/Caddyfile:ro
+    ports:
+      - "${BENCH_PORT_SYMFONY_WORKER:-18060}:80"
+
   # ---- Laravel (PHP-FPM) ------------------------------------------------
   php-laravel:
     <<: *php-base
