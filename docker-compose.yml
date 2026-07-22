@@ -47,7 +47,7 @@ services:
       - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./apps/doppar:/var/www/html:ro
     ports:
-      - "18010:80"
+      - "${BENCH_PORT_DOPPAR:-18010}:80"
     depends_on:
       - php-doppar
 
@@ -66,7 +66,7 @@ services:
     tmpfs:
       - /var/www/html/storage/framework/sessions:mode=1777
     ports:
-      - "18020:80"
+      - "${BENCH_PORT_WORKER:-18020}:80"
 
   # ---- Laravel (PHP-FPM) ------------------------------------------------
   php-laravel:
@@ -85,7 +85,7 @@ services:
       - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./apps/laravel:/var/www/html:ro
     ports:
-      - "18030:80"
+      - "${BENCH_PORT_LARAVEL:-18030}:80"
     depends_on:
       - php-laravel
 
@@ -106,7 +106,7 @@ services:
       - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./apps/symfony:/var/www/html:ro
     ports:
-      - "18040:80"
+      - "${BENCH_PORT_SYMFONY:-18040}:80"
     depends_on:
       - php-symfony
 
