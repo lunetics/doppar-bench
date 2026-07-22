@@ -128,13 +128,14 @@ honest comparison):
 - **Everything is containerized.** Docker networking and overlay filesystems add
   overhead versus bare metal — again, identical for every stack.
 - Only one stack plus `wrk` runs at any moment (compose profiles enforce this).
-- **Run‑to‑run variance is high on a shared desktop.** The same stack/endpoint/stage
-  can vary by up to ~2× between rounds depending on what else the machine is doing.
-  The interleaved scheduling and median mitigate this, and the `Spread (req/s)`
-  column in [`RESULTS.md`](./RESULTS.md) shows the observed min–max per cell — but
-  the practical consequence is that **only large differences between frameworks are
-  meaningful; small gaps are within the noise.** For definitive numbers, re‑run on
-  an otherwise‑idle machine.
+- **Run‑to‑run variance on a shared desktop.** The same stack/endpoint/stage varies
+  between rounds depending on what else the machine is doing (typically ~10–30% here;
+  it was far worse during an earlier run when the host was heavily loaded). The
+  interleaved scheduling and median mitigate this, and the `Spread (req/s)` column in
+  [`RESULTS.md`](./RESULTS.md) shows the observed min–max per cell — the practical
+  consequence is that **only clear differences between frameworks are meaningful;
+  small gaps are within the noise.** For definitive numbers, re‑run on an
+  otherwise‑idle machine.
 - These are single‑session results on one machine; treat them as a reproducible
   data point, not the last word.
 
