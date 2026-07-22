@@ -90,13 +90,16 @@ for ((round=1; round<=REPEATS; round++)); do
     for ep in $ENDPOINTS; do
       path="/$ep"
       # warmup (discarded) — the container came up cold, so prime OPcache/JIT/DB.
-      dc run --rm -T wrk -t4 -c100 -d"${WARMUP}s" "http://${host}${path}" >/dev/null 2>&1 || true
+      # NOTE: </dev/null is REQUIRED — `docker compose run` otherwise consumes the
+      # here-string feeding the `while read stage` loop below, so only the first
+      # stage would ever run.
+      dc run --rm -T wrk -t4 -c100 -d"${WARMUP}s" "http://${host}${path}" </dev/null >/dev/null 2>&1 || true
       while IFS= read -r stage; do
         [ -z "$stage" ] && continue
         read -r t c d <<<"$stage"
         out="$RAW/${stack}__${ep}__t${t}c${c}d${d}__run${round}.txt"
         printf "   %s %s  t%s/c%s/d%ss  round %d ... " "$stack" "$path" "$t" "$c" "$d" "$round"
-        dc run --rm -T wrk -t"$t" -c"$c" -d"${d}s" --latency "http://${host}${path}" >"$out" 2>&1
+        dc run --rm -T wrk -t"$t" -c"$c" -d"${d}s" --latency "http://${host}${path}" </dev/null >"$out" 2>&1
         echo "$(sed -n 's/^Requests\/sec:[[:space:]]*//p' "$out" | head -1) req/s"
         sleep "$COOLDOWN"
       done <<<"$STAGES"
