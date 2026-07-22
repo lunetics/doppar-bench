@@ -57,7 +57,7 @@ perm "$L" 'chmod -R 0777 /t/storage /t/bootstrap/cache /t/database; chmod 0666 /
 # ---------------------------------------------------------------- Symfony
 S="$ROOT/apps/symfony"
 echo ">> symfony (8.x): install + schema + seed + cache"
-run_in "$S" composer install --no-interaction >/dev/null
+run_in "$S" composer install --no-interaction --no-scripts >/dev/null
 own "$S"
 cp "$S/.env.bench" "$S/.env"
 mkdir -p "$S/var"; : > "$S/var/bench.db"
