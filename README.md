@@ -32,7 +32,12 @@ Two endpoints per framework, mirroring the vendor's methodology:
 | `/db`   | fetches one row by primary key through the framework's own ORM, as JSON | the vendor's `User::find(1)` round‑trip |
 
 Each endpoint is hit at the three vendor load stages, after a discarded warmup,
-repeated three times; the **median** requests/sec is reported.
+across three **interleaved rounds**; the **median** requests/sec is reported. The
+run is round‑based — every round runs all stacks once, so a stack's three samples
+are spread over the whole run and any time‑varying load on the (shared desktop)
+host affects all stacks roughly equally instead of biasing whichever stack ran
+during a busy window. A cooldown between every run lets the CPU recover, removing
+the thermal‑throttling decline that appears with back‑to‑back runs.
 
 | Stage | wrk threads | connections | duration |
 |---|---|---|---|
@@ -116,6 +121,13 @@ honest comparison):
 - **Everything is containerized.** Docker networking and overlay filesystems add
   overhead versus bare metal — again, identical for every stack.
 - Only one stack plus `wrk` runs at any moment (compose profiles enforce this).
+- **Run‑to‑run variance is high on a shared desktop.** The same stack/endpoint/stage
+  can vary by up to ~2× between rounds depending on what else the machine is doing.
+  The interleaved scheduling and median mitigate this, and the `Spread (req/s)`
+  column in [`RESULTS.md`](./RESULTS.md) shows the observed min–max per cell — but
+  the practical consequence is that **only large differences between frameworks are
+  meaningful; small gaps are within the noise.** For definitive numbers, re‑run on
+  an otherwise‑idle machine.
 - These are single‑session results on one machine; treat them as a reproducible
   data point, not the last word.
 
