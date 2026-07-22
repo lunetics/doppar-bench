@@ -1,0 +1,53 @@
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking laravel-worker (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        FrankenPHP
+Server Hostname:        laravel-worker
+Server Port:            80
+
+Document Path:          /json
+Document Length:        67 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   12.087 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      14900000 bytes
+HTML transferred:       3350000 bytes
+Requests per second:    4136.57 [#/sec] (mean)
+Time per request:       241.746 [ms] (mean)
+Time per request:       0.242 [ms] (mean, across all concurrent requests)
+Transfer rate:          1203.81 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0  100  18.5    101     155
+Processing:    35  139  24.8    138     239
+Waiting:        3  106  27.1    106     220
+Total:        118  239  17.8    237     295
+
+Percentage of the requests served within a certain time (ms)
+  50%    237
+  66%    246
+  75%    251
+  80%    253
+  90%    265
+  95%    272
+  98%    279
+  99%    281
+ 100%    295 (longest request)

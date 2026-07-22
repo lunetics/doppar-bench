@@ -1,0 +1,53 @@
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking symfony-worker (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        FrankenPHP
+Server Hostname:        symfony-worker
+Server Port:            80
+
+Document Path:          /db
+Document Length:        66 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   11.407 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      14850000 bytes
+HTML transferred:       3300000 bytes
+Requests per second:    4383.34 [#/sec] (mean)
+Time per request:       228.137 [ms] (mean)
+Time per request:       0.228 [ms] (mean, across all concurrent requests)
+Transfer rate:          1271.34 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0  109  19.0    109     168
+Processing:    24  116  22.3    115     279
+Waiting:        2   83  20.1     79     195
+Total:         72  226  14.5    223     399
+
+Percentage of the requests served within a certain time (ms)
+  50%    223
+  66%    228
+  75%    231
+  80%    233
+  90%    239
+  95%    245
+  98%    257
+  99%    274
+ 100%    399 (longest request)

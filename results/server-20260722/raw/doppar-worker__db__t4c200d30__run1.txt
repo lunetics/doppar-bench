@@ -1,14 +1,14 @@
 Running 30s test @ http://frankenphp-doppar/db
   4 threads and 200 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   201.16ms  131.49ms   1.99s    74.61%
-    Req/Sec   229.18    174.19   808.00     81.75%
+    Latency   214.71ms  157.63ms   1.98s    85.12%
+    Req/Sec   222.01    173.52   838.00     84.08%
   Latency Distribution
-     50%  178.47ms
-     75%  280.25ms
-     90%  385.93ms
-     99%  519.36ms
-  27412 requests in 30.10s, 12.44MB read
-  Socket errors: connect 0, read 0, write 0, timeout 118
-Requests/sec:    910.75
-Transfer/sec:    423.36KB
+     50%  162.51ms
+     75%  306.71ms
+     90%  405.79ms
+     99%  622.90ms
+  26550 requests in 30.09s, 12.05MB read
+  Socket errors: connect 0, read 0, write 0, timeout 99
+Requests/sec:    882.44
+Transfer/sec:    410.20KB

@@ -1,0 +1,13 @@
+Running 30s test @ http://laravel-worker/db
+  4 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    28.80ms    1.85ms  53.31ms   79.95%
+    Req/Sec     1.74k    80.93     1.91k    73.00%
+  Latency Distribution
+     50%   28.54ms
+     75%   29.58ms
+     90%   30.76ms
+     99%   34.83ms
+  208191 requests in 30.08s, 73.66MB read
+Requests/sec:   6920.26
+Transfer/sec:      2.45MB
