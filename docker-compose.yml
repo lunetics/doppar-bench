@@ -1,0 +1,100 @@
+# doppar-bench — one compose project, one shared PHP image, one shared nginx
+# template. Each framework is a compose *profile* so only the stack under test
+# (nginx + php-fpm) plus wrk are ever running at once. This keeps the benchmark
+# sequential and prevents neighbouring stacks from stealing CPU.
+#
+#   Fairness invariants baked in here:
+#   * identical php image (docker/php)         -> same PHP 8.5, extensions, OPcache, pool
+#   * identical nginx image + template          -> same web server tuning
+#   * identical container web root (public/)    -> same front-controller path
+#   * only FCGI_PASS differs between stacks      -> the php-fpm upstream name
+name: doppar-bench
+
+x-php: &php-base
+  build:
+    context: ./docker/php
+  image: doppar-bench/php:8.5
+  restart: "no"
+
+x-nginx: &nginx-base
+  image: nginx:1.27-alpine
+  restart: "no"
+  environment:
+    NGINX_WEB_ROOT: /var/www/html/public
+  volumes:
+    - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+
+services:
+  # ---- Doppar (PHP-FPM) -------------------------------------------------
+  php-doppar:
+    <<: *php-base
+    profiles: ["doppar"]
+    volumes:
+      - ./apps/doppar:/var/www/html
+
+  nginx-doppar:
+    <<: *nginx-base
+    profiles: ["doppar"]
+    environment:
+      NGINX_WEB_ROOT: /var/www/html/public
+      FCGI_PASS: php-doppar:9000
+    volumes:
+      - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./apps/doppar:/var/www/html:ro
+    ports:
+      - "18010:80"
+    depends_on:
+      - php-doppar
+
+  # ---- Laravel (PHP-FPM) ------------------------------------------------
+  php-laravel:
+    <<: *php-base
+    profiles: ["laravel"]
+    volumes:
+      - ./apps/laravel:/var/www/html
+
+  nginx-laravel:
+    <<: *nginx-base
+    profiles: ["laravel"]
+    environment:
+      NGINX_WEB_ROOT: /var/www/html/public
+      FCGI_PASS: php-laravel:9000
+    volumes:
+      - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./apps/laravel:/var/www/html:ro
+    ports:
+      - "18030:80"
+    depends_on:
+      - php-laravel
+
+  # ---- Symfony (PHP-FPM) ------------------------------------------------
+  php-symfony:
+    <<: *php-base
+    profiles: ["symfony"]
+    volumes:
+      - ./apps/symfony:/var/www/html
+
+  nginx-symfony:
+    <<: *nginx-base
+    profiles: ["symfony"]
+    environment:
+      NGINX_WEB_ROOT: /var/www/html/public
+      FCGI_PASS: php-symfony:9000
+    volumes:
+      - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./apps/symfony:/var/www/html:ro
+    ports:
+      - "18040:80"
+    depends_on:
+      - php-symfony
+
+  # ---- wrk load generator ----------------------------------------------
+  # Never auto-started (tools profile). Invoked via `docker compose run --rm wrk`
+  # so it shares the project network and hits nginx by service name (no host NAT
+  # in the measurement path).
+  wrk:
+    build:
+      context: ./docker/wrk
+    image: doppar-bench/wrk:4.2.0
+    profiles: ["tools"]
+    restart: "no"

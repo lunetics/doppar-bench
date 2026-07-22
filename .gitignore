@@ -1,0 +1,25 @@
+# Application dependencies and generated state are NOT part of the deliverable —
+# they are recreated from scratch by bench/setup.sh. Raw benchmark output IS
+# part of the deliverable and is deliberately NOT ignored (see results/raw/).
+
+# Composer / framework installs (recreated by setup.sh)
+apps/*/vendor/
+apps/*/node_modules/
+
+# Generated runtime state per framework
+apps/*/database/*.sqlite
+apps/*/database/database.sqlite
+apps/**/var/cache/
+apps/**/var/log/
+apps/*/storage/framework/cache/data/
+apps/*/storage/framework/sessions/
+apps/*/storage/framework/views/
+apps/*/storage/logs/
+apps/*/bootstrap/cache/*.php
+
+# Local env overrides (the committed .env.* templates are what setup.sh uses)
+apps/*/.env
+
+# OS / editor noise
+.DS_Store
+*.swp
