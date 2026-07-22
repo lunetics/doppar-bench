@@ -38,6 +38,11 @@ run_in "$D" php pool migrate >/dev/null
 run_in "$D" php pool db:seed >/dev/null
 run_in "$D" php pool config:cache >/dev/null
 run_in "$D" php pool route:cache >/dev/null
+# Create runtime-writable dirs BEFORE the chmod so 0777 actually covers them.
+# On sudo/root hosts the container user must be able to write here (else a
+# worker can't create its log/state file); some of these dirs are gitignored
+# and would otherwise be absent at chmod time.
+mkdir -p "$D/storage/logs" "$D/storage/framework/sessions" "$D/storage/framework/cache" "$D/storage/framework/views"
 perm "$D" 'chmod -R 0777 /t/storage /t/database; chmod 0666 /t/database/database.sqlite'
 
 # ---------------------------------------------------------------- Laravel
@@ -52,6 +57,7 @@ run_in "$L" php artisan migrate --force >/dev/null
 run_in "$L" php artisan db:seed --force >/dev/null
 run_in "$L" php artisan config:cache >/dev/null
 run_in "$L" php artisan route:cache >/dev/null
+mkdir -p "$L/storage/logs" "$L/storage/framework/cache/data" "$L/storage/framework/sessions" "$L/storage/framework/views" "$L/bootstrap/cache"
 perm "$L" 'chmod -R 0777 /t/storage /t/bootstrap/cache /t/database; chmod 0666 /t/database/database.sqlite'
 
 # ---------------------------------------------------------------- Symfony
@@ -67,6 +73,7 @@ run_in "$S" php bin/console dbal:run-sql \
 run_in "$S" composer dump-env prod >/dev/null
 run_in "$S" php bin/console cache:clear >/dev/null
 run_in "$S" php bin/console cache:warmup >/dev/null
+mkdir -p "$S/var/cache" "$S/var/log"
 perm "$S" 'chmod -R 0777 /t/var; chmod 0666 /t/var/bench.db'
 
 # ------------------------------------------------- Laravel Octane worker
@@ -81,6 +88,10 @@ run_in "$LW" php artisan migrate --force >/dev/null
 run_in "$LW" php artisan db:seed --force >/dev/null
 run_in "$LW" php artisan config:cache >/dev/null
 run_in "$LW" php artisan route:cache >/dev/null
+# Octane writes its process-ID/state file under storage/logs at runtime — that
+# dir MUST exist and be writable, else the worker crash-loops ("Unable to write
+# to process ID file"). Create it (and the other runtime dirs) before the chmod.
+mkdir -p "$LW/storage/logs" "$LW/storage/framework/cache/data" "$LW/storage/framework/sessions" "$LW/storage/framework/views" "$LW/bootstrap/cache"
 perm "$LW" 'chmod -R 0777 /t/storage /t/bootstrap/cache /t/database; chmod 0666 /t/database/database.sqlite'
 
 # ------------------------------------------------- Symfony FrankenPHP worker
@@ -96,6 +107,7 @@ run_in "$SW" php bin/console dbal:run-sql \
 run_in "$SW" composer dump-env prod >/dev/null
 run_in "$SW" php bin/console cache:clear >/dev/null
 run_in "$SW" php bin/console cache:warmup >/dev/null
+mkdir -p "$SW/var/cache" "$SW/var/log"
 perm "$SW" 'chmod -R 0777 /t/var; chmod 0666 /t/var/bench.db'
 
 echo ">> setup complete. Run the benchmark with: ./bench.sh run"

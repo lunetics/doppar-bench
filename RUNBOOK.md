@@ -113,6 +113,12 @@ directory and re‑run `./bench.sh results` so `RESULTS.md` includes it.
   (`READY_TIMEOUT`).
 - **No `python3` on the host** → nothing to do; `bench.sh` runs the generator in a
   container automatically.
+- **A worker stack won't become ready + its log shows `Unable to write to process
+  ID file`** (typically `laravel-worker` under Octane) → its `storage/logs`
+  directory isn't writable by the container user. This mostly bites when running
+  `bench.sh` under `sudo`. `setup.sh` now pre-creates and 0777s the runtime dirs,
+  but you can fix an existing checkout with:
+  `docker run --rm -v "$PWD/apps/laravel-worker":/t alpine:3.20 chmod -R 0777 /t/storage /t/bootstrap/cache /t/database`
 - **Permission errors deleting the checkout after an aborted setup** → a failed
   `setup.sh` can leave container-owned `vendor/` files behind (the chown step
   only runs after a successful install). Clear them with
