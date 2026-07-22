@@ -1,0 +1,53 @@
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking frankenphp-doppar (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        FrankenPHP
+Server Hostname:        frankenphp-doppar
+Server Port:            80
+
+Document Path:          /db
+Document Length:        136 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   85.261 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      25700000 bytes
+HTML transferred:       6800000 bytes
+Requests per second:    586.43 [#/sec] (mean)
+Time per request:       1705.220 [ms] (mean)
+Time per request:       1.705 [ms] (mean, across all concurrent requests)
+Transfer rate:          294.36 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    2  12.6      0     121
+Processing:    57 1613 1242.2   1284   18120
+Waiting:        5 1613 1242.3   1284   18119
+Total:        124 1615 1240.0   1284   18120
+
+Percentage of the requests served within a certain time (ms)
+  50%   1284
+  66%   1920
+  75%   2245
+  80%   2639
+  90%   3290
+  95%   3474
+  98%   3835
+  99%   3903
+ 100%  18120 (longest request)

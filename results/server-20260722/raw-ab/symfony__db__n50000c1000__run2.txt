@@ -1,0 +1,53 @@
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking nginx-symfony (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        nginx/1.27.5
+Server Hostname:        nginx-symfony
+Server Port:            80
+
+Document Path:          /db
+Document Length:        66 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   20.960 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      14600000 bytes
+HTML transferred:       3300000 bytes
+Requests per second:    2385.47 [#/sec] (mean)
+Time per request:       419.205 [ms] (mean)
+Time per request:       0.419 [ms] (mean, across all concurrent requests)
+Transfer rate:          680.23 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    2  11.7      0     117
+Processing:    45  412  35.9    410     502
+Waiting:        9  412  36.0    410     502
+Total:        126  414  26.6    410     502
+
+Percentage of the requests served within a certain time (ms)
+  50%    410
+  66%    417
+  75%    420
+  80%    423
+  90%    439
+  95%    452
+  98%    469
+  99%    478
+ 100%    502 (longest request)

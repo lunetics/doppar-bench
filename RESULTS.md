@@ -158,3 +158,18 @@ stacks: doppar-fpm doppar-worker laravel symfony
 | Doppar (FrankenPHP worker) ¹ | /db | 8/500/60s | 676 | 694.0 ms | 248 socket | 649–691 |
 
 </details>
+
+### ApacheBench cross-check — `ab -n 50000 -c 1000`, no keep-alive
+
+> Mirrors the **older** vendor methodology (ApacheBench). A different load generator, and ab opens a **fresh connection per request** (no keep-alive), so throughput is dominated by connection setup/teardown and is frequently generator-limited. **These numbers are NOT comparable to the wrk tables above** — read them only across the stacks within this table. `req/s` is the median of the repeats; latency is ab's mean time per request; failures are the worst repeat.
+
+| Stack | Endpoint | req/s (median) | Mean latency | Failed requests |
+|---|---|---|---|---|
+| Doppar (PHP-FPM) | /json | 1,015 | 831.3 ms | 0 |
+| Doppar (PHP-FPM) | /db | 961 | 980.9 ms | 0 |
+| Laravel (PHP-FPM) | /json | 4,056 | 244.2 ms | 0 |
+| Laravel (PHP-FPM) | /db | 2,822 | 353.0 ms | 0 |
+| Symfony (PHP-FPM) | /json | 4,179 | 235.6 ms | 0 |
+| Symfony (PHP-FPM) | /db | 2,387 | 418.5 ms | 0 |
+| Doppar (FrankenPHP worker) ¹ | /json | 809 | 1218.5 ms | 0 |
+| Doppar (FrankenPHP worker) ¹ | /db | 538 | 1705.2 ms | 0 |

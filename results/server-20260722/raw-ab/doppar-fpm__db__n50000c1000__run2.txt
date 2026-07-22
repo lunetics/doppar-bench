@@ -1,0 +1,53 @@
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking nginx-doppar (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        nginx/1.27.5
+Server Hostname:        nginx-doppar
+Server Port:            80
+
+Document Path:          /db
+Document Length:        136 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   55.369 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      25400000 bytes
+HTML transferred:       6800000 bytes
+Requests per second:    903.03 [#/sec] (mean)
+Time per request:       1107.378 [ms] (mean)
+Time per request:       1.107 [ms] (mean, across all concurrent requests)
+Transfer rate:          447.99 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    9  20.5      0     121
+Processing:    49 1059 752.5    967    5626
+Waiting:        5 1057 755.3    967    5626
+Total:        126 1068 742.2    967    5626
+
+Percentage of the requests served within a certain time (ms)
+  50%    967
+  66%   1219
+  75%   1477
+  80%   1669
+  90%   2098
+  95%   2593
+  98%   3023
+  99%   3136
+ 100%   5626 (longest request)

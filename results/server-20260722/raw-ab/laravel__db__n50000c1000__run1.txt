@@ -1,0 +1,53 @@
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking nginx-laravel (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        nginx/1.27.5
+Server Hostname:        nginx-laravel
+Server Port:            80
+
+Document Path:          /db
+Document Length:        177 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   17.648 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      20150000 bytes
+HTML transferred:       8850000 bytes
+Requests per second:    2833.19 [#/sec] (mean)
+Time per request:       352.959 [ms] (mean)
+Time per request:       0.353 [ms] (mean, across all concurrent requests)
+Transfer rate:          1115.02 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    3  13.7      0     122
+Processing:    73  345  26.7    346     411
+Waiting:        9  345  28.0    346     411
+Total:        131  348  16.6    346     411
+
+Percentage of the requests served within a certain time (ms)
+  50%    346
+  66%    350
+  75%    352
+  80%    353
+  90%    360
+  95%    376
+  98%    393
+  99%    397
+ 100%    411 (longest request)
