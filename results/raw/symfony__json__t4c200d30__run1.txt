@@ -1,0 +1,15 @@
+ Container doppar-bench-wrk-run-86b118ad2fcb Creating 
+ Container doppar-bench-wrk-run-86b118ad2fcb Created 
+Running 30s test @ http://nginx-symfony/json
+  4 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    14.37ms    2.18ms  54.28ms   87.92%
+    Req/Sec     3.50k   339.71     4.03k    74.17%
+  Latency Distribution
+     50%   13.66ms
+     75%   14.61ms
+     90%   17.26ms
+     99%   22.58ms
+  417436 requests in 30.02s, 119.03MB read
+Requests/sec:  13903.63
+Transfer/sec:      3.96MB

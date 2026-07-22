@@ -1,0 +1,16 @@
+ Container doppar-bench-wrk-run-e4014d67decf Creating 
+ Container doppar-bench-wrk-run-e4014d67decf Created 
+Running 30s test @ http://frankenphp-doppar/db
+  4 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   399.50ms  203.30ms   1.31s    70.90%
+    Req/Sec   115.61    102.23   550.00     75.56%
+  Latency Distribution
+     50%  380.95ms
+     75%  500.54ms
+     90%  666.99ms
+     99%    1.10s 
+  13289 requests in 30.06s, 7.36MB read
+  Socket errors: connect 0, read 0, write 0, timeout 130
+Requests/sec:    442.09
+Transfer/sec:    250.84KB

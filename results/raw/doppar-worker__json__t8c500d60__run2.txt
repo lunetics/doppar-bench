@@ -1,0 +1,16 @@
+ Container doppar-bench-wrk-run-aae60faf166e Creating 
+ Container doppar-bench-wrk-run-aae60faf166e Created 
+Running 1m test @ http://frankenphp-doppar/json
+  8 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   625.93ms  226.72ms   1.66s    68.49%
+    Req/Sec    96.30     70.56   474.00     72.44%
+  Latency Distribution
+     50%  626.90ms
+     75%  754.74ms
+     90%  911.96ms
+     99%    1.28s 
+  45223 requests in 1.00m, 22.00MB read
+  Socket errors: connect 0, read 0, write 0, timeout 417
+Requests/sec:    752.76
+Transfer/sec:    374.91KB

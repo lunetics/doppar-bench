@@ -60,7 +60,7 @@ wait_ready() {
   echo "# doppar-bench environment"
   echo "date_utc: $(date -u +%FT%TZ)"
   echo "kernel: $(uname -sr)"
-  echo "cpu: $(lscpu | sed -n 's/^Model name:[[:space:]]*//p' | head -1)"
+  echo "cpu: $(LC_ALL=C lscpu | sed -n 's/^Model name:[[:space:]]*//p' | head -1)"
   echo "cpu_logical: $(nproc)"
   echo "mem_total: $(awk '/MemTotal/{printf "%.0f GiB", $2/1024/1024}' /proc/meminfo)"
   echo "docker: $(docker --version)"

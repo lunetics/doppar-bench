@@ -1,0 +1,15 @@
+ Container doppar-bench-wrk-run-324fd25e82e8 Creating 
+ Container doppar-bench-wrk-run-324fd25e82e8 Created 
+Running 20s test @ http://nginx-laravel/db
+  2 threads and 50 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     9.62ms    2.24ms  56.98ms   84.27%
+    Req/Sec     2.62k   398.27     3.11k    68.75%
+  Latency Distribution
+     50%    9.02ms
+     75%   10.07ms
+     90%   12.56ms
+     99%   17.76ms
+  104158 requests in 20.01s, 40.63MB read
+Requests/sec:   5205.99
+Transfer/sec:      2.03MB
