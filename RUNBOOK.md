@@ -24,7 +24,7 @@ worth benchmarking. The images are built on first run.
 ## 2. Get the repo
 
 ```bash
-git clone <repo-url> doppar-bench
+git clone https://github.com/lunetics/doppar-bench.git
 cd doppar-bench
 # …or copy the directory onto the host (vendor/ is gitignored and rebuilt) and cd in.
 ```

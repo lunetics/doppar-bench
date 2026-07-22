@@ -69,4 +69,4 @@ run_in "$S" php bin/console cache:clear >/dev/null
 run_in "$S" php bin/console cache:warmup >/dev/null
 perm "$S" 'chmod -R 0777 /t/var; chmod 0666 /t/var/bench.db'
 
-echo ">> setup complete. Run the benchmark with: ./bench/run.sh"
+echo ">> setup complete. Run the benchmark with: ./bench.sh run"
