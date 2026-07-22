@@ -139,14 +139,25 @@ honest comparison):
 - These are single‑session results on one machine; treat them as a reproducible
   data point, not the last word.
 
-## Benchmark host
+## Benchmark hosts
+
+Two deliberately different machines — the relative ordering turned out to
+depend on the hardware generation (see `RESULTS.md` for both sections):
 
 ```
-CPU     : 12th Gen Intel Core i9-12900K (8 P-cores + 8 E-cores, 24 logical threads)
-RAM     : 123 GiB
-Kernel  : Linux 6.17.0-35-generic
-Docker  : 29.6.2
-Compose : v5.3.1
+desktop (bare metal)
+  CPU     : 12th Gen Intel Core i9-12900K (8 P + 8 E cores, 24 logical threads)
+  RAM     : 123 GiB
+  Storage : NVMe SSD
+  Kernel  : Linux 6.17
+  Docker  : 29.6.2 / Compose v5.3.1
+
+server (VMware VM, otherwise idle)
+  CPU     : Intel Xeon E5-2690 v2 @ 3.00 GHz (2013 Ivy Bridge EP), 35 vCPUs
+  RAM     : 189 GiB
+  Storage : VMware virtual disk (non-rotational as seen by the guest)
+  Kernel  : Linux 5.15
+  Docker  : 27.0.3 / Compose v2.28.1
 ```
 
 The exact environment of each run is captured to `results/<host>/env.txt` by

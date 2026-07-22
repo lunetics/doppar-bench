@@ -4,17 +4,19 @@ Median requests/sec across repeats, per stack × endpoint × load stage, for eac
 
 ¹ **Doppar (FrankenPHP worker)** is experimental and NOT a controlled comparison: it swaps nginx+php-fpm for FrankenPHP/Caddy, so it changes the web server AND the runtime model at once. Read it as “can Doppar run as a persistent worker, and roughly how fast”, not as a like-for-like row against the PHP-FPM stacks. See README.
 
-## Host: `mb-Desktop-20260722`
+## Host: `desktop-20260722`
 
 ```
 # doppar-bench environment
-host_tag: mb-Desktop-20260722
-hostname: mb-Desktop
+host_tag: desktop-20260722
+hostname: desktop
 date_utc: 2026-07-22T08:00:48Z
 kernel: Linux 6.17.0-35-generic
 cpu: 12th Gen Intel(R) Core(TM) i9-12900K
 cpu_logical: 24
 mem_total: 123 GiB
+storage: NVMe SSD
+virtualization: none (bare metal)
 docker: Docker version 29.6.2, build dfc4efb
 compose: 5.3.1
 stages: 2 50 20;4 200 30;8 500 60;
@@ -71,17 +73,19 @@ stacks: doppar-fpm doppar-worker laravel symfony
 
 </details>
 
-## Host: `rockharz-20260722`
+## Host: `server-20260722`
 
 ```
 # doppar-bench environment
-host_tag: rockharz-20260722
-hostname: rockharz
+host_tag: server-20260722
+hostname: server
 date_utc: 2026-07-22T11:31:33Z
 kernel: Linux 5.15.0-164-generic
 cpu: Intel(R) Xeon(R) CPU E5-2690 v2 @ 3.00GHz
 cpu_logical: 35
 mem_total: 189 GiB
+storage: VMware virtual disk, 100 GB (non-rotational per guest)
+virtualization: VMware VM (full), 35 vCPUs
 docker: Docker version 27.0.3, build 7d4bcd8
 compose: 2.28.1
 stages: 2 50 20;4 200 30;8 500 60;
