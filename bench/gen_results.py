@@ -36,6 +36,8 @@ ENDPOINT_LABEL = {"json": "/json (static JSON)", "db": "/db (ORM primary-key loo
 STAGE_ORDER = [(2, 50, 20), (4, 200, 30), (8, 500, 60)]
 
 FNAME = re.compile(r"^(?P<stack>.+?)__(?P<ep>json|db)__t(?P<t>\d+)c(?P<c>\d+)d(?P<d>\d+)__run(?P<r>\d+)\.txt$")
+# Optional ApacheBench cross-check reports: {stack}__{ep}__n{N}c{C}__run{R}.txt
+AB_FNAME = re.compile(r"^(?P<stack>.+?)__(?P<ep>json|db)__n(?P<n>\d+)c(?P<c>\d+)__run(?P<r>\d+)\.txt$")
 
 
 def parse_report(path: str):
@@ -54,6 +56,29 @@ def parse_report(path: str):
     m = re.search(r"Socket errors:.*?connect (\d+), read (\d+), write (\d+), timeout (\d+)", txt)
     if m:
         out["sock"] = sum(int(x) for x in m.groups())
+    return out
+
+
+def parse_ab(path: str):
+    """Parse one ApacheBench report. Mean latency is the 'Time per request …
+    (mean)' line (NOT the '… across all concurrent requests' one)."""
+    txt = open(path, encoding="utf-8", errors="replace").read()
+    out = {"rps": None, "lat_ms": None, "failed": 0, "non2xx": 0, "complete": 0}
+    m = re.search(r"^Requests per second:\s*([\d.]+)", txt, re.M)
+    if m:
+        out["rps"] = float(m.group(1))
+    m = re.search(r"^Time per request:\s*([\d.]+) \[ms\] \(mean\)\s*$", txt, re.M)
+    if m:
+        out["lat_ms"] = float(m.group(1))
+    m = re.search(r"^Failed requests:\s*(\d+)", txt, re.M)
+    if m:
+        out["failed"] = int(m.group(1))
+    m = re.search(r"^Non-2xx responses:\s*(\d+)", txt, re.M)
+    if m:
+        out["non2xx"] = int(m.group(1))
+    m = re.search(r"^Complete requests:\s*(\d+)", txt, re.M)
+    if m:
+        out["complete"] = int(m.group(1))
     return out
 
 
@@ -87,7 +112,8 @@ def find_host_dirs():
     hosts = []
     for d in sorted(glob.glob(os.path.join(RESULTS, "*", ""))):
         raw = os.path.join(d, "raw")
-        if glob.glob(os.path.join(raw, "*.txt")):
+        ab = os.path.join(d, "raw-ab")
+        if glob.glob(os.path.join(raw, "*.txt")) or glob.glob(os.path.join(ab, "*.txt")):
             hosts.append((os.path.basename(os.path.normpath(d)), raw, os.path.join(d, "env.txt")))
     legacy_raw = os.path.join(RESULTS, "raw")
     if glob.glob(os.path.join(legacy_raw, "*.txt")):
@@ -128,26 +154,70 @@ def render_host(tag, raw_dir, env_file):
             L.append(f"| {STACK_LABEL.get(stack, stack)} | " + " | ".join(cells) + " |")
         L.append("")
 
-    L.append("<details><summary>Detailed metrics (median req/s, latency, errors, spread)</summary>")
-    L.append("")
-    L.append("| Stack | Endpoint | Stage (t/c/d) | Median req/s | Avg latency | Errors | Spread (req/s) |")
-    L.append("|---|---|---|---|---|---|---|")
-    for stack in stacks_present:
-        for ep in ENDPOINT_ORDER:
-            for stage in STAGE_ORDER:
-                recs = grouped.get((stack, ep, stage))
+    if grouped:
+        L.append("<details><summary>Detailed metrics (median req/s, latency, errors, spread)</summary>")
+        L.append("")
+        L.append("| Stack | Endpoint | Stage (t/c/d) | Median req/s | Avg latency | Errors | Spread (req/s) |")
+        L.append("|---|---|---|---|---|---|---|")
+        for stack in stacks_present:
+            for ep in ENDPOINT_ORDER:
+                for stage in STAGE_ORDER:
+                    recs = grouped.get((stack, ep, stage))
+                    if not recs:
+                        continue
+                    med, rep, lo, hi = median_record(recs)
+                    t, c, d = stage
+                    L.append(
+                        f"| {STACK_LABEL.get(stack, stack)} | /{ep} | {t}/{c}/{d}s | "
+                        f"{med:,.0f} | {fmt_lat(rep['lat_ms'])} | {fmt_err(rep['non2xx'], rep['sock'])} | "
+                        f"{lo:,.0f}–{hi:,.0f} |"
+                    )
+        L.append("")
+        L.append("</details>")
+        L.append("")
+
+    # ---- optional ApacheBench cross-check (results/<host>/raw-ab/) ----
+    ab_dir = os.path.join(os.path.dirname(os.path.normpath(raw_dir)), "raw-ab")
+    ab_grouped = defaultdict(list)
+    for path in glob.glob(os.path.join(ab_dir, "*.txt")):
+        m = AB_FNAME.match(os.path.basename(path))
+        if not m:
+            continue
+        rec = parse_ab(path)
+        if rec["rps"] is None:
+            continue
+        ab_grouped[(m["stack"], m["ep"], (int(m["n"]), int(m["c"])))].append(rec)
+
+    if ab_grouped:
+        n, c = sorted({k[2] for k in ab_grouped})[0]
+        ab_stacks = [s for s in STACK_ORDER if any(k[0] == s for k in ab_grouped)]
+        ab_stacks += sorted({k[0] for k in ab_grouped} - set(STACK_ORDER))
+        L.append(f"### ApacheBench cross-check — `ab -n {n} -c {c}`, no keep-alive")
+        L.append("")
+        L.append("> Mirrors the **older** vendor methodology (ApacheBench). A different load "
+                 "generator, and ab opens a **fresh connection per request** (no keep-alive), so "
+                 "throughput is dominated by connection setup/teardown and is frequently "
+                 "generator-limited. **These numbers are NOT comparable to the wrk tables above** — "
+                 "read them only across the stacks within this table. `req/s` is the median of the "
+                 "repeats; latency is ab's mean time per request; failures are the worst repeat.")
+        L.append("")
+        L.append("| Stack | Endpoint | req/s (median) | Mean latency | Failed requests |")
+        L.append("|---|---|---|---|---|")
+        for stack in ab_stacks:
+            for ep in ENDPOINT_ORDER:
+                recs = ab_grouped.get((stack, ep, (n, c)))
                 if not recs:
                     continue
-                med, rep, lo, hi = median_record(recs)
-                t, c, d = stage
-                L.append(
-                    f"| {STACK_LABEL.get(stack, stack)} | /{ep} | {t}/{c}/{d}s | "
-                    f"{med:,.0f} | {fmt_lat(rep['lat_ms'])} | {fmt_err(rep['non2xx'], rep['sock'])} | "
-                    f"{lo:,.0f}–{hi:,.0f} |"
-                )
-    L.append("")
-    L.append("</details>")
-    L.append("")
+                recs_s = sorted(recs, key=lambda x: x["rps"])
+                med = statistics.median(r["rps"] for r in recs_s)
+                rep = recs_s[len(recs_s) // 2]
+                failed = max(r["failed"] for r in recs_s)
+                non2xx = max(r["non2xx"] for r in recs_s)
+                ftxt = str(failed) if non2xx == 0 else f"{failed} ({non2xx} non-2xx)"
+                L.append(f"| {STACK_LABEL.get(stack, stack)} | /{ep} | {med:,.0f} | "
+                         f"{fmt_lat(rep['lat_ms'])} | {ftxt} |")
+        L.append("")
+
     return "\n".join(L)
 
 

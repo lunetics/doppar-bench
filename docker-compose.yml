@@ -120,3 +120,19 @@ services:
     image: doppar-bench/wrk:4.2.0
     profiles: ["tools"]
     restart: "no"
+
+  # ---- ApacheBench cross-check generator (optional; see bench.sh ab) -----
+  # Mirrors the older vendor methodology (ab, no keep-alive). Never in the
+  # default `all` run. Invoked via `docker compose run --rm ab`.
+  ab:
+    build:
+      context: ./docker/ab
+    image: doppar-bench/ab:latest
+    profiles: ["tools"]
+    restart: "no"
+    # ab -c 1000 opens ~1000 client sockets at once; raise the fd limit so it
+    # doesn't die with "socket: Too many open files (24)" at high concurrency.
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536

@@ -13,6 +13,8 @@
 #   ./bench.sh doppar-worker
 #   ./bench.sh laravel
 #   ./bench.sh symfony
+#   ./bench.sh ab [stack...]       OPTIONAL ApacheBench cross-check (ab -n 50000
+#                                  -c 1000, no keep-alive) — NOT part of `all`
 #   ./bench.sh results             (re)generate RESULTS.md from results/*/
 #   ./bench.sh down                stop and remove all benchmark containers
 #   ./bench.sh help
@@ -80,6 +82,13 @@ case "$cmd" in
   doppar-fpm|doppar-worker|laravel|symfony)
     need_docker; ensure_setup
     STACKS="$cmd" bash "$ROOT/bench/run.sh"
+    gen_results
+    ;;
+  ab)
+    # Optional ApacheBench cross-check — deliberately separate from `all`/`run`
+    # (our published methodology is wrk). Same apps, same endpoints, different generator.
+    need_docker; ensure_setup
+    STACKS="${*:-${STACKS:-doppar-fpm doppar-worker laravel symfony}}" bash "$ROOT/bench/run-ab.sh"
     gen_results
     ;;
   results)
