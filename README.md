@@ -147,15 +147,15 @@ depend on the hardware generation (see `RESULTS.md` for both sections):
 ```
 desktop (bare metal)
   CPU     : 12th Gen Intel Core i9-12900K (8 P + 8 E cores, 24 logical threads)
-  RAM     : 123 GiB
-  Storage : NVMe SSD
+  RAM     : 123 GiB DDR5-4000
+  Storage : Kingston KC3000 2 TB NVMe SSD (LUKS-encrypted LVM)
   Kernel  : Linux 6.17
   Docker  : 29.6.2 / Compose v5.3.1
 
 server (VMware VM, otherwise idle)
   CPU     : Intel Xeon E5-2690 v2 @ 3.00 GHz (2013 Ivy Bridge EP), 35 vCPUs
-  RAM     : 189 GiB
-  Storage : VMware virtual disk (non-rotational as seen by the guest)
+  RAM     : 189 GiB (DDR3-era Ivy Bridge EP host platform)
+  Storage : VMware virtual disk backed by an Intel DC P3600 NVMe SSD
   Kernel  : Linux 5.15
   Docker  : 27.0.3 / Compose v2.28.1
 ```
