@@ -45,6 +45,19 @@ port_of() { case "$1" in
 
 dc() { docker compose "$@"; }
 
+# Doppar writes a new session file per (cookieless) request. Clear the tmpfs
+# sessions dir before each run so accumulation from a previous run can't slow a
+# later stage via directory scaling. No-op for the stateless Laravel/Symfony.
+clean_sessions() {
+  local svc
+  case "$1" in
+    doppar-fpm)    svc=php-doppar;;
+    doppar-worker) svc=frankenphp-doppar;;
+    *) return 0;;
+  esac
+  dc exec -T "$svc" sh -c 'find /var/www/html/storage/framework/sessions -type f -delete 2>/dev/null' >/dev/null 2>&1 || true
+}
+
 wait_ready() {
   local port="$1" url="http://localhost:$port/json" i
   for ((i=0; i<READY_TIMEOUT; i++)); do
@@ -93,12 +106,14 @@ for ((round=1; round<=REPEATS; round++)); do
       # NOTE: </dev/null is REQUIRED — `docker compose run` otherwise consumes the
       # here-string feeding the `while read stage` loop below, so only the first
       # stage would ever run.
+      clean_sessions "$stack"
       dc run --rm -T wrk -t4 -c100 -d"${WARMUP}s" "http://${host}${path}" </dev/null >/dev/null 2>&1 || true
       while IFS= read -r stage; do
         [ -z "$stage" ] && continue
         read -r t c d <<<"$stage"
         out="$RAW/${stack}__${ep}__t${t}c${c}d${d}__run${round}.txt"
         printf "   %s %s  t%s/c%s/d%ss  round %d ... " "$stack" "$path" "$t" "$c" "$d" "$round"
+        clean_sessions "$stack"
         dc run --rm -T wrk -t"$t" -c"$c" -d"${d}s" --latency "http://${host}${path}" </dev/null >"$out" 2>&1
         echo "$(sed -n 's/^Requests\/sec:[[:space:]]*//p' "$out" | head -1) req/s"
         sleep "$COOLDOWN"

@@ -31,6 +31,11 @@ services:
     profiles: ["doppar"]
     volumes:
       - ./apps/doppar:/var/www/html
+    # Doppar's mandatory per-request session uses the file driver; wrk is
+    # cookieless so each request writes a new session file. Keep that on tmpfs
+    # (RAM) so we measure framework overhead, not disk churn. See README.
+    tmpfs:
+      - /var/www/html/storage/framework/sessions:mode=1777
 
   nginx-doppar:
     <<: *nginx-base
@@ -58,6 +63,8 @@ services:
     volumes:
       - ./apps/doppar:/var/www/html
       - ./docker/frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro
+    tmpfs:
+      - /var/www/html/storage/framework/sessions:mode=1777
     ports:
       - "18020:80"
 

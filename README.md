@@ -103,12 +103,19 @@ honest comparison):
   routes are registered outside the web middleware group; Symfony starts a session
   only on read/write and the bench routes never touch it.
 - **Doppar boots a session + CSRF token on every request** — this is a core service
-  provider that cannot be disabled via config. Because `wrk` sends no cookies, a
-  file session driver would write a brand‑new session file per request (a disk‑I/O
-  artifact, not framework overhead), so Doppar uses the **cookie** session driver:
-  the session/CSRF/encryption work still runs, on the CPU where it belongs. This is
-  a real architectural difference — Doppar has no first‑class stateless route — and
-  it is part of what the numbers show.
+  provider that cannot be disabled via config (`relaxablePaths` only skips CSRF
+  *validation*, not `session_start()`). Doppar therefore has no first‑class stateless
+  route, and this per‑request cost is part of what the numbers show. Two sub‑decisions,
+  both made to be *fair to Doppar*:
+  - **File session driver** (Doppar's default, and the driver the vendor benchmarked).
+    We initially used the cookie driver and it turned out ~4.5× slower on `/db` — its
+    per‑request encryption is a heavy path in Doppar — which would have unfairly
+    buried it. The file driver is the honest "as it ships" choice.
+  - **Sessions on tmpfs (RAM).** Because `wrk` sends no cookies, every request creates
+    a *new* session file. On disk that becomes an inode/directory‑scaling artifact that
+    does not reflect production (real clients reuse their session cookie), so the
+    sessions directory is mounted on tmpfs and `bench/run.sh` clears it before each run.
+    This measures Doppar's framework + session logic, not disk churn.
 - **The worker stack** uses a different web server (see ¹ above).
 
 ## Caveats
