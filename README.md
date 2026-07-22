@@ -163,6 +163,10 @@ server (VMware VM, otherwise idle)
 The exact environment of each run is captured to `results/<host>/env.txt` by
 `bench/run.sh`.
 
+The full fairness contract — every setting per framework, with sources, plus
+the notes from an adversarial self-audit of this setup — lives in
+[FAIRNESS.md](FAIRNESS.md).
+
 ## Reproduce
 
 Runs on any Linux host with only **Docker (Compose v2 plugin) and git** — PHP,
