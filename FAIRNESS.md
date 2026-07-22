@@ -91,6 +91,30 @@ documented way to disable sessions per route, this benchmark will add that row.
   verified effective at runtime for Doppar (cache files present in the running
   container, `APP_ROUTE_CACHE` honored by the router).
 
+## Optional ApacheBench cross-check
+
+The vendor also published an **older** set of numbers with a different tool:
+ApacheBench (`ab`), 50,000 requests at 1,000 concurrency against a DB-backed
+endpoint, no flags documented (dev.to, Sept 2025). `./bench.sh ab` reproduces
+that load on the **exact same application containers and endpoints** as the wrk
+run — same PHP/OPcache/pool, same production caches, same SQLite seed, same
+per-framework config from the tables above. Only the load generator differs:
+
+- `ab -n 50000 -c 1000`, **no `-k`**: the vendor documented no keep-alive, and
+  ab's default is HTTP/1.0 without keep-alive, so it is kept off deliberately — a
+  fresh TCP connection per request.
+- It is **not** our published methodology and is **not** part of `./bench.sh all`.
+  ab's per-request connection churn makes throughput dominated by connection
+  setup/teardown and frequently generator-limited, so ab numbers appear in a
+  clearly separated "ApacheBench cross-check" table and are **not comparable** to
+  the wrk figures — only to the other stacks measured the same way.
+- Raw ab output is committed under `results/<host>/raw-ab/`; the ab generator
+  runs in the same Docker network with a raised `nofile` limit (65536) so
+  `-c 1000` doesn't exhaust file descriptors.
+
+Because the application setup is byte-identical to the wrk run, the fairness
+contract above applies unchanged — only the generator is swapped.
+
 ## What the vendor documents about his own benchmark
 
 For contrast: the published Doppar benchmark (docs "Benchmark Snapshot")

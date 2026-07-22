@@ -61,6 +61,7 @@ overwrites another machine's numbers — no manual archiving needed.
 ./bench.sh setup            # just build images + (re)create the apps
 ./bench.sh run              # benchmark all stacks (apps must be set up)
 ./bench.sh laravel          # benchmark a single stack: doppar-fpm|doppar-worker|laravel|symfony
+./bench.sh ab               # OPTIONAL ApacheBench cross-check (ab -n 50000 -c 1000, no keep-alive; not in `all`)
 ./bench.sh results          # just (re)generate RESULTS.md from results/*/
 ./bench.sh down             # stop/remove all benchmark containers
 ```
