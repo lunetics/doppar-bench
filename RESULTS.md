@@ -70,3 +70,70 @@ stacks: doppar-fpm doppar-worker laravel symfony
 | Doppar (FrankenPHP worker) ¹ | /db | 8/500/60s | 2,138 | 244.8 ms | 0 | 2,018–2,179 |
 
 </details>
+
+## Host: `rockharz-20260722`
+
+```
+# doppar-bench environment
+host_tag: rockharz-20260722
+hostname: rockharz
+date_utc: 2026-07-22T11:31:33Z
+kernel: Linux 5.15.0-164-generic
+cpu: Intel(R) Xeon(R) CPU E5-2690 v2 @ 3.00GHz
+cpu_logical: 35
+mem_total: 189 GiB
+docker: Docker version 27.0.3, build 7d4bcd8
+compose: 2.28.1
+stages: 2 50 20;4 200 30;8 500 60;
+rounds(repeats): 3  warmup: 6s  cooldown: 6s  scheduling: interleaved
+stacks: doppar-fpm doppar-worker laravel symfony
+```
+
+### /json (static JSON)
+
+| Stack | 2t / 50c / 20s | 4t / 200c / 30s | 8t / 500c / 60s |
+|---|---|---|---|
+| Doppar (PHP-FPM) | **1,644** req/s | **1,324** req/s | **936** req/s |
+| Laravel (PHP-FPM) | **4,469** req/s | **4,422** req/s | **4,414** req/s |
+| Symfony (PHP-FPM) | **4,726** req/s | **4,637** req/s | **4,627** req/s |
+| Doppar (FrankenPHP worker) ¹ | **1,376** req/s | **970** req/s | **660** req/s |
+
+### /db (ORM primary-key lookup)
+
+| Stack | 2t / 50c / 20s | 4t / 200c / 30s | 8t / 500c / 60s |
+|---|---|---|---|
+| Doppar (PHP-FPM) | **1,541** req/s | **1,316** req/s | **949** req/s |
+| Laravel (PHP-FPM) | **2,921** req/s | **2,914** req/s | **2,906** req/s |
+| Symfony (PHP-FPM) | **2,465** req/s | **2,443** req/s | **2,432** req/s |
+| Doppar (FrankenPHP worker) ¹ | **1,242** req/s | **911** req/s | **676** req/s |
+
+<details><summary>Detailed metrics (median req/s, latency, errors, spread)</summary>
+
+| Stack | Endpoint | Stage (t/c/d) | Median req/s | Avg latency | Errors | Spread (req/s) |
+|---|---|---|---|---|---|---|
+| Doppar (PHP-FPM) | /json | 2/50/20s | 1,644 | 121.4 ms | 5 socket | 1,538–1,727 |
+| Doppar (PHP-FPM) | /json | 4/200/30s | 1,324 | 183.5 ms | 33 socket | 1,304–1,382 |
+| Doppar (PHP-FPM) | /json | 8/500/60s | 936 | 535.9 ms | 401 socket | 855–940 |
+| Doppar (PHP-FPM) | /db | 2/50/20s | 1,541 | 107.3 ms | 0 | 1,518–1,900 |
+| Doppar (PHP-FPM) | /db | 4/200/30s | 1,316 | 181.9 ms | 19 socket | 1,252–1,489 |
+| Doppar (PHP-FPM) | /db | 8/500/60s | 949 | 539.7 ms | 306 socket | 888–1,057 |
+| Laravel (PHP-FPM) | /json | 2/50/20s | 4,469 | 11.2 ms | 0 | 4,443–4,546 |
+| Laravel (PHP-FPM) | /json | 4/200/30s | 4,422 | 45.1 ms | 0 | 4,391–4,474 |
+| Laravel (PHP-FPM) | /json | 8/500/60s | 4,414 | 112.1 ms | 0 | 4,326–4,443 |
+| Laravel (PHP-FPM) | /db | 2/50/20s | 2,921 | 17.1 ms | 0 | 2,912–2,969 |
+| Laravel (PHP-FPM) | /db | 4/200/30s | 2,914 | 68.4 ms | 0 | 2,886–2,928 |
+| Laravel (PHP-FPM) | /db | 8/500/60s | 2,906 | 170.2 ms | 0 | 2,868–2,910 |
+| Symfony (PHP-FPM) | /json | 2/50/20s | 4,726 | 10.6 ms | 0 | 4,700–4,731 |
+| Symfony (PHP-FPM) | /json | 4/200/30s | 4,637 | 42.9 ms | 0 | 4,597–4,671 |
+| Symfony (PHP-FPM) | /json | 8/500/60s | 4,627 | 106.8 ms | 0 | 4,617–4,648 |
+| Symfony (PHP-FPM) | /db | 2/50/20s | 2,465 | 20.3 ms | 0 | 2,448–2,479 |
+| Symfony (PHP-FPM) | /db | 4/200/30s | 2,443 | 81.6 ms | 0 | 2,435–2,460 |
+| Symfony (PHP-FPM) | /db | 8/500/60s | 2,432 | 203.1 ms | 0 | 2,402–2,441 |
+| Doppar (FrankenPHP worker) ¹ | /json | 2/50/20s | 1,376 | 108.6 ms | 41 socket | 1,351–1,436 |
+| Doppar (FrankenPHP worker) ¹ | /json | 4/200/30s | 970 | 191.7 ms | 107 socket | 932–1,026 |
+| Doppar (FrankenPHP worker) ¹ | /json | 8/500/60s | 660 | 702.6 ms | 221 socket | 656–665 |
+| Doppar (FrankenPHP worker) ¹ | /db | 2/50/20s | 1,242 | 81.2 ms | 46 socket | 1,216–1,247 |
+| Doppar (FrankenPHP worker) ¹ | /db | 4/200/30s | 911 | 201.2 ms | 118 socket | 905–912 |
+| Doppar (FrankenPHP worker) ¹ | /db | 8/500/60s | 676 | 694.0 ms | 248 socket | 649–691 |
+
+</details>

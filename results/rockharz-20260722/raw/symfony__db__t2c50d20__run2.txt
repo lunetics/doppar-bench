@@ -1,0 +1,13 @@
+Running 20s test @ http://nginx-symfony/db
+  2 threads and 50 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    20.15ms    1.14ms  31.50ms   86.00%
+    Req/Sec     1.25k    40.49     1.30k    82.00%
+  Latency Distribution
+     50%   19.90ms
+     75%   20.51ms
+     90%   21.31ms
+     99%   24.69ms
+  49594 requests in 20.01s, 14.09MB read
+Requests/sec:   2478.61
+Transfer/sec:    721.31KB

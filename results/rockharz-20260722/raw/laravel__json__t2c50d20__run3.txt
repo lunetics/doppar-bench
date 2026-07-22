@@ -1,0 +1,13 @@
+Running 20s test @ http://nginx-laravel/json
+  2 threads and 50 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    11.24ms    0.87ms  29.32ms   84.24%
+    Req/Sec     2.23k    98.15     2.42k    80.75%
+  Latency Distribution
+     50%   11.02ms
+     75%   11.48ms
+     90%   12.24ms
+     99%   14.35ms
+  88905 requests in 20.01s, 25.35MB read
+Requests/sec:   4443.21
+Transfer/sec:      1.27MB

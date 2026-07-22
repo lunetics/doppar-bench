@@ -1,0 +1,14 @@
+Running 1m test @ http://nginx-doppar/db
+  8 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   552.25ms  361.68ms   2.00s    66.56%
+    Req/Sec   116.90    115.09   650.00     89.23%
+  Latency Distribution
+     50%  524.55ms
+     75%  749.07ms
+     90%    1.00s 
+     99%    1.80s 
+  53315 requests in 1.00m, 26.13MB read
+  Socket errors: connect 0, read 0, write 0, timeout 547
+Requests/sec:    888.26
+Transfer/sec:    445.87KB

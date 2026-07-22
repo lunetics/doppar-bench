@@ -1,0 +1,14 @@
+Running 30s test @ http://nginx-doppar/json
+  4 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   183.54ms  196.21ms   1.98s    90.02%
+    Req/Sec   337.80    309.40     1.50k    85.88%
+  Latency Distribution
+     50%  129.48ms
+     75%  223.33ms
+     90%  379.16ms
+     99%    1.05s 
+  39834 requests in 30.09s, 16.87MB read
+  Socket errors: connect 0, read 0, write 0, timeout 33
+Requests/sec:   1323.79
+Transfer/sec:    573.99KB

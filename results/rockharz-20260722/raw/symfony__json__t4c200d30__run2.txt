@@ -1,0 +1,13 @@
+Running 30s test @ http://nginx-symfony/json
+  4 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    42.67ms    2.01ms  62.50ms   86.52%
+    Req/Sec     1.18k    71.71     1.47k    71.17%
+  Latency Distribution
+     50%   42.28ms
+     75%   43.30ms
+     90%   44.67ms
+     99%   50.65ms
+  140558 requests in 30.09s, 40.08MB read
+Requests/sec:   4670.86
+Transfer/sec:      1.33MB
