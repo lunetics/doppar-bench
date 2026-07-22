@@ -1,15 +1,15 @@
- Container doppar-bench-wrk-run-9b64c7d5ccc7 Creating 
- Container doppar-bench-wrk-run-9b64c7d5ccc7 Created 
+ Container doppar-bench-wrk-run-6bd5ed3b6e97 Creating 
+ Container doppar-bench-wrk-run-6bd5ed3b6e97 Created 
 Running 20s test @ http://nginx-symfony/db
   2 threads and 50 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     7.04ms    1.34ms  40.60ms   83.91%
-    Req/Sec     3.57k   352.70     4.07k    68.00%
+    Latency     8.50ms    4.40ms 267.06ms   94.43%
+    Req/Sec     3.00k   601.32     3.85k    59.00%
   Latency Distribution
-     50%    6.78ms
-     75%    7.41ms
-     90%    8.51ms
-     99%   11.91ms
-  142070 requests in 20.00s, 40.38MB read
-Requests/sec:   7102.53
-Transfer/sec:      2.02MB
+     50%    7.61ms
+     75%    9.27ms
+     90%   11.56ms
+     99%   17.75ms
+  119404 requests in 20.01s, 33.93MB read
+Requests/sec:   5966.86
+Transfer/sec:      1.70MB

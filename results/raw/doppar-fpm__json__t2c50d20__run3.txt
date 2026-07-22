@@ -1,15 +1,15 @@
- Container doppar-bench-wrk-run-34769abff034 Creating 
- Container doppar-bench-wrk-run-34769abff034 Created 
+ Container doppar-bench-wrk-run-d2876da8b861 Creating 
+ Container doppar-bench-wrk-run-d2876da8b861 Created 
 Running 20s test @ http://nginx-doppar/json
   2 threads and 50 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    62.89ms  119.74ms 933.53ms   89.76%
-    Req/Sec     1.16k     1.18k    6.77k    89.25%
+    Latency    27.95ms   65.48ms 684.24ms   91.46%
+    Req/Sec     3.07k     1.95k    8.25k    64.25%
   Latency Distribution
-     50%   13.00ms
-     75%   50.43ms
-     90%  189.77ms
-     99%  584.35ms
-  46193 requests in 20.01s, 24.19MB read
-Requests/sec:   2308.12
-Transfer/sec:      1.21MB
+     50%    5.77ms
+     75%   12.84ms
+     90%   71.21ms
+     99%  337.22ms
+  122034 requests in 20.00s, 51.67MB read
+Requests/sec:   6100.30
+Transfer/sec:      2.58MB

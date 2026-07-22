@@ -4,7 +4,7 @@ Median requests/sec across repeats, per stack × endpoint × load stage. Generat
 
 ```
 # doppar-bench environment
-date_utc: 2026-07-22T02:17:55Z
+date_utc: 2026-07-22T08:00:48Z
 kernel: Linux 6.17.0-35-generic
 cpu: 12th Gen Intel(R) Core(TM) i9-12900K
 cpu_logical: 24
@@ -20,19 +20,19 @@ stacks: doppar-fpm doppar-worker laravel symfony
 
 | Stack | 2t / 50c / 20s | 4t / 200c / 30s | 8t / 500c / 60s |
 |---|---|---|---|
-| Doppar (PHP-FPM) | **2,308** req/s | **1,211** req/s | **849** req/s |
-| Laravel (PHP-FPM) | **8,609** req/s | **8,575** req/s | **8,501** req/s |
-| Symfony (PHP-FPM) | **13,939** req/s | **13,885** req/s | **13,731** req/s |
-| Doppar (FrankenPHP worker) ¹ | **1,871** req/s | **1,083** req/s | **722** req/s |
+| Doppar (PHP-FPM) | **5,914** req/s | **4,638** req/s | **3,299** req/s |
+| Laravel (PHP-FPM) | **7,862** req/s | **7,820** req/s | **7,404** req/s |
+| Symfony (PHP-FPM) | **11,625** req/s | **12,558** req/s | **12,099** req/s |
+| Doppar (FrankenPHP worker) ¹ | **3,244** req/s | **2,684** req/s | **2,087** req/s |
 
 ## /db (ORM primary-key lookup)
 
 | Stack | 2t / 50c / 20s | 4t / 200c / 30s | 8t / 500c / 60s |
 |---|---|---|---|
-| Doppar (PHP-FPM) | **519** req/s | **507** req/s | **498** req/s |
-| Laravel (PHP-FPM) | **5,206** req/s | **5,214** req/s | **5,220** req/s |
-| Symfony (PHP-FPM) | **7,065** req/s | **7,031** req/s | **7,028** req/s |
-| Doppar (FrankenPHP worker) ¹ | **549** req/s | **498** req/s | **449** req/s |
+| Doppar (PHP-FPM) | **4,953** req/s | **4,016** req/s | **3,185** req/s |
+| Laravel (PHP-FPM) | **4,299** req/s | **4,479** req/s | **4,503** req/s |
+| Symfony (PHP-FPM) | **6,180** req/s | **6,290** req/s | **6,073** req/s |
+| Doppar (FrankenPHP worker) ¹ | **3,449** req/s | **2,885** req/s | **2,138** req/s |
 
 ## Detailed metrics
 
@@ -40,29 +40,29 @@ stacks: doppar-fpm doppar-worker laravel symfony
 
 | Stack | Endpoint | Stage (t/c/d) | Median req/s | Avg latency | Errors | Spread (req/s) |
 |---|---|---|---|---|---|---|
-| Doppar (PHP-FPM) | /json | 2/50/20s | 2,308 | 62.9 ms | 0 | 2,100–2,565 |
-| Doppar (PHP-FPM) | /json | 4/200/30s | 1,211 | 214.0 ms | 13 socket | 1,103–1,433 |
-| Doppar (PHP-FPM) | /json | 8/500/60s | 849 | 581.1 ms | 301 socket | 656–907 |
-| Doppar (PHP-FPM) | /db | 2/50/20s | 519 | 145.0 ms | 72 socket | 472–786 |
-| Doppar (PHP-FPM) | /db | 4/200/30s | 507 | 400.6 ms | 211 socket | 397–624 |
-| Doppar (PHP-FPM) | /db | 8/500/60s | 498 | 920.2 ms | 1166 socket | 425–544 |
-| Laravel (PHP-FPM) | /json | 2/50/20s | 8,609 | 5.8 ms | 0 | 8,441–8,627 |
-| Laravel (PHP-FPM) | /json | 4/200/30s | 8,575 | 23.3 ms | 0 | 8,313–8,709 |
-| Laravel (PHP-FPM) | /json | 8/500/60s | 8,501 | 58.3 ms | 0 | 8,318–8,634 |
-| Laravel (PHP-FPM) | /db | 2/50/20s | 5,206 | 9.6 ms | 0 | 5,142–5,302 |
-| Laravel (PHP-FPM) | /db | 4/200/30s | 5,214 | 38.3 ms | 0 | 5,209–5,222 |
-| Laravel (PHP-FPM) | /db | 8/500/60s | 5,220 | 94.8 ms | 0 | 5,136–5,252 |
-| Symfony (PHP-FPM) | /json | 2/50/20s | 13,939 | 3.6 ms | 0 | 13,741–13,993 |
-| Symfony (PHP-FPM) | /json | 4/200/30s | 13,885 | 14.4 ms | 0 | 13,700–13,904 |
-| Symfony (PHP-FPM) | /json | 8/500/60s | 13,731 | 36.1 ms | 0 | 13,701–13,954 |
-| Symfony (PHP-FPM) | /db | 2/50/20s | 7,065 | 7.1 ms | 0 | 6,993–7,103 |
-| Symfony (PHP-FPM) | /db | 4/200/30s | 7,031 | 28.4 ms | 0 | 6,991–7,120 |
-| Symfony (PHP-FPM) | /db | 8/500/60s | 7,028 | 70.5 ms | 0 | 7,005–7,038 |
-| Doppar (FrankenPHP worker) ¹ | /json | 2/50/20s | 1,871 | 113.6 ms | 0 | 1,867–1,976 |
-| Doppar (FrankenPHP worker) ¹ | /json | 4/200/30s | 1,083 | 202.4 ms | 139 socket | 1,070–1,123 |
-| Doppar (FrankenPHP worker) ¹ | /json | 8/500/60s | 722 | 654.5 ms | 405 socket | 678–753 |
-| Doppar (FrankenPHP worker) ¹ | /db | 2/50/20s | 549 | 54.6 ms | 87 socket | 473–585 |
-| Doppar (FrankenPHP worker) ¹ | /db | 4/200/30s | 498 | 352.4 ms | 125 socket | 442–534 |
-| Doppar (FrankenPHP worker) ¹ | /db | 8/500/60s | 449 | 1000.0 ms | 920 socket | 424–451 |
+| Doppar (PHP-FPM) | /json | 2/50/20s | 5,914 | 26.6 ms | 0 | 4,716–6,100 |
+| Doppar (PHP-FPM) | /json | 4/200/30s | 4,638 | 55.7 ms | 0 | 4,409–4,931 |
+| Doppar (PHP-FPM) | /json | 8/500/60s | 3,299 | 170.3 ms | 0 | 3,273–3,425 |
+| Doppar (PHP-FPM) | /db | 2/50/20s | 4,953 | 25.5 ms | 0 | 4,597–4,980 |
+| Doppar (PHP-FPM) | /db | 4/200/30s | 4,016 | 58.9 ms | 0 | 3,996–4,065 |
+| Doppar (PHP-FPM) | /db | 8/500/60s | 3,185 | 172.9 ms | 0 | 2,918–3,454 |
+| Laravel (PHP-FPM) | /json | 2/50/20s | 7,862 | 6.4 ms | 0 | 7,451–8,187 |
+| Laravel (PHP-FPM) | /json | 4/200/30s | 7,820 | 25.5 ms | 0 | 7,547–7,840 |
+| Laravel (PHP-FPM) | /json | 8/500/60s | 7,404 | 66.9 ms | 0 | 7,292–7,757 |
+| Laravel (PHP-FPM) | /db | 2/50/20s | 4,299 | 11.7 ms | 0 | 3,949–4,555 |
+| Laravel (PHP-FPM) | /db | 4/200/30s | 4,479 | 44.5 ms | 0 | 4,303–4,511 |
+| Laravel (PHP-FPM) | /db | 8/500/60s | 4,503 | 109.9 ms | 0 | 4,302–5,019 |
+| Symfony (PHP-FPM) | /json | 2/50/20s | 11,625 | 4.3 ms | 0 | 11,127–13,448 |
+| Symfony (PHP-FPM) | /json | 4/200/30s | 12,558 | 15.9 ms | 0 | 11,944–13,233 |
+| Symfony (PHP-FPM) | /json | 8/500/60s | 12,099 | 40.9 ms | 0 | 11,824–12,493 |
+| Symfony (PHP-FPM) | /db | 2/50/20s | 6,180 | 8.1 ms | 0 | 5,967–6,254 |
+| Symfony (PHP-FPM) | /db | 4/200/30s | 6,290 | 31.7 ms | 0 | 6,224–6,651 |
+| Symfony (PHP-FPM) | /db | 8/500/60s | 6,073 | 81.6 ms | 0 | 6,001–6,088 |
+| Doppar (FrankenPHP worker) ¹ | /json | 2/50/20s | 3,244 | 60.6 ms | 0 | 3,212–3,582 |
+| Doppar (FrankenPHP worker) ¹ | /json | 4/200/30s | 2,684 | 93.5 ms | 0 | 2,451–2,999 |
+| Doppar (FrankenPHP worker) ¹ | /json | 8/500/60s | 2,087 | 250.2 ms | 4 socket | 2,029–2,148 |
+| Doppar (FrankenPHP worker) ¹ | /db | 2/50/20s | 3,449 | 54.3 ms | 0 | 3,146–3,499 |
+| Doppar (FrankenPHP worker) ¹ | /db | 4/200/30s | 2,885 | 88.4 ms | 0 | 2,679–2,930 |
+| Doppar (FrankenPHP worker) ¹ | /db | 8/500/60s | 2,138 | 244.8 ms | 0 | 2,018–2,179 |
 
 ¹ **Doppar (FrankenPHP worker)** is experimental and NOT a controlled comparison: it swaps nginx+php-fpm for FrankenPHP/Caddy, so it changes the web server AND the runtime model at once. Read it as “can Doppar run as a persistent worker, and roughly how fast”, not as a like-for-like row against the PHP-FPM stacks. See README.
