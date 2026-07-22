@@ -55,7 +55,9 @@ clean_sessions() {
     doppar-worker) svc=frankenphp-doppar;;
     *) return 0;;
   esac
-  dc exec -T "$svc" sh -c 'find /var/www/html/storage/framework/sessions -type f -delete 2>/dev/null' >/dev/null 2>&1 || true
+  # </dev/null is REQUIRED here too: like `docker compose run`, `exec` reads
+  # stdin and would otherwise swallow the stage here-string loop that calls this.
+  dc exec -T "$svc" sh -c 'find /var/www/html/storage/framework/sessions -type f -delete 2>/dev/null' </dev/null >/dev/null 2>&1 || true
 }
 
 wait_ready() {
