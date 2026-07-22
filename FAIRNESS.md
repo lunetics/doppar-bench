@@ -65,6 +65,34 @@ documented stateless routes and pay none of this. Keeping the session is not a
 bench decision; it is what Doppar ships. If a future Doppar release adds a
 documented way to disable sessions per route, this benchmark will add that row.
 
+## Worker group (FrankenPHP): what each framework officially ships
+
+The three worker stacks exist so the "persistent worker" comparison is symmetric.
+They are comparable **among themselves** (identical FrankenPHP base image, 16
+workers each — matching `pm.max_children=16`), but not like-for-like with the
+nginx+PHP-FPM stacks (different web server *and* runtime model).
+
+| Stack | What the framework officially provides | Source |
+|---|---|---|
+| `doppar-worker` | **Nothing shipped.** Doppar has no worker runtime; `pool server:start` is just PHP's dev server. We wrote a custom boot-once worker script. | (framework has no worker docs) |
+| `laravel-worker` | **First-party: Laravel Octane** with the FrankenPHP driver (`laravel/octane`, `octane:install --server=frankenphp`, `octane:frankenphp`). | [frankenphp.dev/docs/laravel](https://frankenphp.dev/docs/laravel/) |
+| `symfony-worker` | **Native since Symfony 7.4** — no extra package, no `APP_RUNTIME` override; `symfony/runtime` runs the FrankenPHP worker loop directly on `public/index.php`. | [frankenphp.dev/docs/worker](https://frankenphp.dev/docs/worker/), [frankenphp.dev/docs/symfony](https://frankenphp.dev/docs/symfony/) |
+
+Alignment notes:
+- **Same FrankenPHP image for all three** (`dunglas/frankenphp`, FrankenPHP v1.12.6 /
+  PHP 8.5.8), extended to the FPM image's extension surface (`pdo_sqlite`,
+  `opcache`, `intl`, `zip`, `bcmath`, `pcntl`). `pcntl` is required by Laravel
+  Octane (signal handling); the base image already ships `mbstring`, `ctype`,
+  `dom`, `tokenizer`, `session`.
+- **16 workers everywhere**, set explicitly (`num 16` in the Doppar and Symfony
+  Caddyfiles, `--workers=16` for Octane).
+- Because adding those extensions changed the shared worker image, `doppar-worker`
+  was **re-measured on the final image** so all three worker rows come from
+  identical infrastructure.
+- The bench routes are the same stateless `/json` and `/db` as the FPM stacks;
+  production caches are applied identically (Octane runs on `config:cache` +
+  `route:cache`; Symfony on a warmed `prod` cache).
+
 ## Adversarial self-audit notes (2026-07-22)
 
 - **CSRF does not run on the bench routes.** Runtime probe: responses carry a

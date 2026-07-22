@@ -55,17 +55,18 @@ Results land in [`RESULTS.md`](./RESULTS.md); raw `wrk` reports are kept under
 | **Doppar (PHP‑FPM)** | nginx + php‑fpm | process‑per‑request |
 | **Laravel (PHP‑FPM)** | nginx + php‑fpm | process‑per‑request |
 | **Symfony (PHP‑FPM)** | nginx + php‑fpm | process‑per‑request |
-| **Doppar (FrankenPHP worker)** ¹ | FrankenPHP / Caddy | persistent in‑memory worker |
+| **Doppar (FrankenPHP worker)** ¹ | FrankenPHP / Caddy | persistent in‑memory worker (custom script) |
+| **Laravel (Octane · FrankenPHP)** ¹ | FrankenPHP / Caddy | persistent in‑memory worker (first‑party Octane) |
+| **Symfony (FrankenPHP worker)** ¹ | FrankenPHP / Caddy | persistent in‑memory worker (native, ≥ 7.4) |
 
-¹ **Experimental, not a controlled comparison.** The original post credits
-Doppar's speed to a "worker mode" started with `php pool server:start` — but that
-command only launches PHP's built‑in single‑process dev server; Doppar ships **no
-persistent worker runtime**. To measure worker mode at all we wrote a custom
-FrankenPHP worker that boots the Doppar app once and reuses it across requests
-(see [`apps/doppar/public/frankenphp-worker.php`](./apps/doppar/public/frankenphp-worker.php)).
-It works, but it swaps nginx+php‑fpm for FrankenPHP/Caddy — so it changes the web
-server **and** the runtime model at once. Read that row as "can Doppar run as a
-persistent worker, and roughly how fast", not as a like‑for‑like comparison.
+¹ **The three worker stacks are a group.** They all run on the **same FrankenPHP
+image with 16 workers**, so they are comparable *among themselves* — but not
+like‑for‑like with the nginx+php‑fpm rows (different web server and runtime model).
+What each framework officially ships differs, and that is the point of the group:
+Doppar ships **no** worker runtime (`pool server:start` is just PHP's dev server),
+so we wrote a custom boot‑once script; Laravel provides **first‑party Octane**
+(`--server=frankenphp`); Symfony has **native** FrankenPHP worker support since
+7.4 (no extra package). See [FAIRNESS.md](./FAIRNESS.md).
 
 ## Versions
 
