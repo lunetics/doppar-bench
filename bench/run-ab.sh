@@ -17,7 +17,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="$PWD"
 
-STACKS="${STACKS:-doppar-fpm doppar-worker laravel symfony}"
+STACKS="${STACKS:-doppar-fpm laravel symfony doppar-worker laravel-worker symfony-worker}"
 ENDPOINTS="${ENDPOINTS:-json db}"
 # Exactly the documented vendor load.
 AB_N="${AB_N:-50000}"
@@ -38,14 +38,18 @@ export BENCH_PORT_DOPPAR="${BENCH_PORT_DOPPAR:-$((BENCH_PORT_BASE + 10))}"
 export BENCH_PORT_WORKER="${BENCH_PORT_WORKER:-$((BENCH_PORT_BASE + 20))}"
 export BENCH_PORT_LARAVEL="${BENCH_PORT_LARAVEL:-$((BENCH_PORT_BASE + 30))}"
 export BENCH_PORT_SYMFONY="${BENCH_PORT_SYMFONY:-$((BENCH_PORT_BASE + 40))}"
+export BENCH_PORT_LARAVEL_WORKER="${BENCH_PORT_LARAVEL_WORKER:-$((BENCH_PORT_BASE + 50))}"
+export BENCH_PORT_SYMFONY_WORKER="${BENCH_PORT_SYMFONY_WORKER:-$((BENCH_PORT_BASE + 60))}"
 
 profile_of() { case "$1" in
   doppar-fpm) echo doppar;; doppar-worker) echo doppar-worker;;
   laravel) echo laravel;; symfony) echo symfony;;
+  laravel-worker) echo laravel-worker;; symfony-worker) echo symfony-worker;;
   *) echo "unknown stack: $1" >&2; exit 1;; esac; }
 host_of() { case "$1" in
   doppar-fpm) echo nginx-doppar;; doppar-worker) echo frankenphp-doppar;;
   laravel) echo nginx-laravel;; symfony) echo nginx-symfony;;
+  laravel-worker) echo laravel-worker;; symfony-worker) echo symfony-worker;;
   esac; }
 
 dc() { docker compose "$@"; }

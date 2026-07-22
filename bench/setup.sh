@@ -69,4 +69,33 @@ run_in "$S" php bin/console cache:clear >/dev/null
 run_in "$S" php bin/console cache:warmup >/dev/null
 perm "$S" 'chmod -R 0777 /t/var; chmod 0666 /t/var/bench.db'
 
+# ------------------------------------------------- Laravel Octane worker
+LW="$ROOT/apps/laravel-worker"
+echo ">> laravel-worker (Octane/FrankenPHP): install + migrate + seed + cache"
+run_in "$LW" composer install --no-interaction --no-scripts >/dev/null
+own "$LW"
+cp "$LW/.env.bench" "$LW/.env"
+mkdir -p "$LW/database"; : > "$LW/database/database.sqlite"
+run_in "$LW" php artisan key:generate >/dev/null
+run_in "$LW" php artisan migrate --force >/dev/null
+run_in "$LW" php artisan db:seed --force >/dev/null
+run_in "$LW" php artisan config:cache >/dev/null
+run_in "$LW" php artisan route:cache >/dev/null
+perm "$LW" 'chmod -R 0777 /t/storage /t/bootstrap/cache /t/database; chmod 0666 /t/database/database.sqlite'
+
+# ------------------------------------------------- Symfony FrankenPHP worker
+SW="$ROOT/apps/symfony-worker"
+echo ">> symfony-worker (FrankenPHP native worker): install + schema + seed + cache"
+run_in "$SW" composer install --no-interaction --no-scripts >/dev/null
+own "$SW"
+cp "$SW/.env.bench" "$SW/.env"
+mkdir -p "$SW/var"; : > "$SW/var/bench.db"
+run_in "$SW" php bin/console doctrine:schema:create >/dev/null
+run_in "$SW" php bin/console dbal:run-sql \
+  "INSERT INTO users (name,email) VALUES ('Benchmark User','bench@doppar-bench.test')" >/dev/null
+run_in "$SW" composer dump-env prod >/dev/null
+run_in "$SW" php bin/console cache:clear >/dev/null
+run_in "$SW" php bin/console cache:warmup >/dev/null
+perm "$SW" 'chmod -R 0777 /t/var; chmod 0666 /t/var/bench.db'
+
 echo ">> setup complete. Run the benchmark with: ./bench.sh run"

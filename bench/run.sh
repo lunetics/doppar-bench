@@ -21,7 +21,7 @@ cd "$(dirname "$0")/.."
 ROOT="$PWD"
 
 # ---- configuration ----------------------------------------------------------
-STACKS="${STACKS:-doppar-fpm doppar-worker laravel symfony}"
+STACKS="${STACKS:-doppar-fpm laravel symfony doppar-worker laravel-worker symfony-worker}"
 ENDPOINTS="${ENDPOINTS:-json db}"
 # Vendor load stages: "threads connections duration_seconds".
 STAGES_DEFAULT=$'2 50 20\n4 200 30\n8 500 60'
@@ -44,14 +44,18 @@ export BENCH_PORT_DOPPAR="${BENCH_PORT_DOPPAR:-$((BENCH_PORT_BASE + 10))}"
 export BENCH_PORT_WORKER="${BENCH_PORT_WORKER:-$((BENCH_PORT_BASE + 20))}"
 export BENCH_PORT_LARAVEL="${BENCH_PORT_LARAVEL:-$((BENCH_PORT_BASE + 30))}"
 export BENCH_PORT_SYMFONY="${BENCH_PORT_SYMFONY:-$((BENCH_PORT_BASE + 40))}"
+export BENCH_PORT_LARAVEL_WORKER="${BENCH_PORT_LARAVEL_WORKER:-$((BENCH_PORT_BASE + 50))}"
+export BENCH_PORT_SYMFONY_WORKER="${BENCH_PORT_SYMFONY_WORKER:-$((BENCH_PORT_BASE + 60))}"
 
 profile_of() { case "$1" in
   doppar-fpm) echo doppar;; doppar-worker) echo doppar-worker;;
   laravel) echo laravel;; symfony) echo symfony;;
+  laravel-worker) echo laravel-worker;; symfony-worker) echo symfony-worker;;
   *) echo "unknown stack: $1" >&2; exit 1;; esac; }
 host_of() { case "$1" in
   doppar-fpm) echo nginx-doppar;; doppar-worker) echo frankenphp-doppar;;
   laravel) echo nginx-laravel;; symfony) echo nginx-symfony;;
+  laravel-worker) echo laravel-worker;; symfony-worker) echo symfony-worker;;
   esac; }
 
 dc() { docker compose "$@"; }
@@ -100,7 +104,9 @@ capture_env() {
     echo "cpu_logical: ${cores:-unknown}"
     echo "mem_total: ${mem:-unknown}"
     echo "storage: $(lsblk -dn -o NAME,ROTA,MODEL 2>/dev/null | grep -Ev '^(loop|sr|zram|ram)' | while read -r n r m; do printf '%s=%s%s; ' "$n" "$([ "$r" = 1 ] && echo HDD || echo SSD)" "${m:+ ($m)}"; done)"
-    local virt; virt="$(systemd-detect-virt 2>/dev/null)"
+    # `|| true`: systemd-detect-virt exits 1 on bare metal ("none"), which would
+    # abort the script under `set -e`.
+    local virt; virt="$(systemd-detect-virt 2>/dev/null || true)"
     echo "virtualization: ${virt:-unknown}"
     echo "docker: $(docker --version 2>/dev/null)"
     echo "compose: $(docker compose version --short 2>/dev/null)"

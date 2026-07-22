@@ -9,10 +9,9 @@
 #                                  RESULTS.md + tear everything down
 #   ./bench.sh setup               build images + (re)create the three apps
 #   ./bench.sh run [stack...]      benchmark all stacks (or the ones named)
-#   ./bench.sh doppar-fpm          benchmark a single stack (shorthand for run)
-#   ./bench.sh doppar-worker
-#   ./bench.sh laravel
-#   ./bench.sh symfony
+#   ./bench.sh <stack>             benchmark a single stack (shorthand for run):
+#                                  doppar-fpm | laravel | symfony |
+#                                  doppar-worker | laravel-worker | symfony-worker
 #   ./bench.sh ab [stack...]       OPTIONAL ApacheBench cross-check (ab -n 50000
 #                                  -c 1000, no keep-alive) — NOT part of `all`
 #   ./bench.sh results             (re)generate RESULTS.md from results/*/
@@ -36,7 +35,9 @@ need_docker() {
 }
 
 apps_ready() {
-  [ -d "$ROOT/apps/doppar/vendor" ] && [ -d "$ROOT/apps/laravel/vendor" ] && [ -d "$ROOT/apps/symfony/vendor" ]
+  for a in doppar laravel symfony laravel-worker symfony-worker; do
+    [ -d "$ROOT/apps/$a/vendor" ] || return 1
+  done
 }
 ensure_setup() { apps_ready || bash "$ROOT/bench/setup.sh"; }
 
@@ -79,7 +80,7 @@ case "$cmd" in
     STACKS="${*:-${STACKS:-doppar-fpm doppar-worker laravel symfony}}" bash "$ROOT/bench/run.sh"
     gen_results
     ;;
-  doppar-fpm|doppar-worker|laravel|symfony)
+  doppar-fpm|doppar-worker|laravel|symfony|laravel-worker|symfony-worker)
     need_docker; ensure_setup
     STACKS="$cmd" bash "$ROOT/bench/run.sh"
     gen_results
