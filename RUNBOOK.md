@@ -111,3 +111,8 @@ directory and re‑run `./bench.sh results` so `RESULTS.md` includes it.
   (`READY_TIMEOUT`).
 - **No `python3` on the host** → nothing to do; `bench.sh` runs the generator in a
   container automatically.
+- **Permission errors deleting the checkout after an aborted setup** → a failed
+  `setup.sh` can leave container-owned `vendor/` files behind (the chown step
+  only runs after a successful install). Clear them with
+  `docker run --rm -v "$PWD":/t alpine:3.20 sh -c 'rm -rf /t/apps/doppar/vendor /t/apps/laravel/vendor /t/apps/symfony/vendor'`
+  and re-run `./bench.sh setup`.
