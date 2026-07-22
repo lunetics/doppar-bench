@@ -149,44 +149,56 @@ Docker  : 29.6.2
 Compose : v5.3.1
 ```
 
-The exact environment of a given run is captured to `results/env.txt` by
+The exact environment of each run is captured to `results/<host>/env.txt` by
 `bench/run.sh`.
 
 ## Reproduce
 
-Requires only Docker (with the Compose plugin). Nothing is installed on the host —
-PHP, Composer and wrk all run in containers. Compose project name `doppar-bench`,
-ports `18010`–`18040`.
+Runs on any Linux host with only **Docker (Compose v2 plugin) and git** — PHP,
+Composer, wrk and even the results generator run in containers; nothing else is
+assumed on the host. One command does everything:
 
 ```bash
-# 1. Build the apps (composer install + migrate + seed + warm caches, all dockerized)
-./bench/setup.sh
-
-# 2. Run the full benchmark (~50 min; brings each stack up in turn, benches, tears down)
-./bench/run.sh
-
-# 3. Generate RESULTS.md from the raw wrk reports
-python3 bench/gen_results.py
+./bench.sh all      # build apps + benchmark every stack + write RESULTS.md + tear down (~45-60 min)
 ```
 
-Tunable via env vars, e.g. skip the experimental worker and do two repeats:
+Sub-steps and single stacks are available too:
 
 ```bash
-STACKS="doppar-fpm laravel symfony" REPEATS=2 ./bench/run.sh
+./bench.sh setup                 # build images + (re)create the apps
+./bench.sh run                   # benchmark all stacks (apps must be set up)
+./bench.sh laravel               # benchmark one stack (doppar-fpm|doppar-worker|laravel|symfony)
+./bench.sh results               # regenerate RESULTS.md from results/*/
+./bench.sh down                  # stop/remove all benchmark containers
 ```
+
+Tunable via env vars, e.g. skip the experimental worker and do two rounds, or move
+the host debug ports:
+
+```bash
+STACKS="doppar-fpm laravel symfony" REPEATS=2 ./bench.sh run
+BENCH_PORT_BASE=19000 ./bench.sh all
+```
+
+Results are written **per host** to `results/<hostname>-<date>/`, so runs from
+several machines (a laptop, a dedicated server, a NAS) coexist and appear as
+separate sections in `RESULTS.md`. Full first-time instructions are in
+[RUNBOOK.md](./RUNBOOK.md).
 
 ## Layout
 
 ```
+bench.sh             one-command entrypoint (all | setup | run | <stack> | results | down)
 docker/php/          shared PHP 8.5-fpm image (extensions, OPcache, pool)
 docker/nginx/        shared nginx vhost template
 docker/frankenphp/   FrankenPHP image + Caddyfile for the worker stack
 docker/wrk/          wrk 4.2.0 built from source
 apps/{doppar,laravel,symfony}/   the three applications (vendor/ gitignored)
 bench/setup.sh       reproduce the apps from a clean checkout
-bench/run.sh         drive warmup + load stages + repeats -> results/raw/
-bench/gen_results.py raw reports -> RESULTS.md
-results/raw/         raw wrk output (committed; part of the deliverable)
+bench/run.sh         drive warmup + load stages + repeats -> results/<host>/raw/
+bench/gen_results.py per-host raw reports -> RESULTS.md (one section per host)
+results/<host>/      raw wrk output + env.txt per machine (committed; part of the deliverable)
+RUNBOOK.md           first-time "run this on your own machine" guide
 ```
 
 ## License
