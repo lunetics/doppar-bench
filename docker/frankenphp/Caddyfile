@@ -1,0 +1,16 @@
+{
+	auto_https off
+	frankenphp {
+		worker {
+			# App is mounted at /var/www/html so the paths baked into Doppar's
+			# cached config (built at that path for the FPM stack) resolve here too.
+			file /var/www/html/public/frankenphp-worker.php
+			num 16
+		}
+	}
+}
+
+:80 {
+	root /var/www/html/public
+	php_server
+}

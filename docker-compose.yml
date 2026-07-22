@@ -46,6 +46,21 @@ services:
     depends_on:
       - php-doppar
 
+  # ---- Doppar (FrankenPHP worker mode, experimental) --------------------
+  # Doppar ships no worker runtime; this stack boots the app once and reuses it
+  # across requests via a custom FrankenPHP worker script. See README caveats.
+  frankenphp-doppar:
+    build:
+      context: ./docker/frankenphp
+    image: doppar-bench/frankenphp:latest
+    profiles: ["doppar-worker"]
+    restart: "no"
+    volumes:
+      - ./apps/doppar:/var/www/html
+      - ./docker/frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro
+    ports:
+      - "18020:80"
+
   # ---- Laravel (PHP-FPM) ------------------------------------------------
   php-laravel:
     <<: *php-base
