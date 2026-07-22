@@ -15,7 +15,8 @@ kernel: Linux 6.17.0-35-generic
 cpu: 12th Gen Intel(R) Core(TM) i9-12900K
 cpu_logical: 24
 mem_total: 123 GiB
-storage: NVMe SSD
+mem_type: DDR5, 4000 MT/s
+storage: Kingston KC3000 2 TB NVMe SSD (SKC3000D2048G), LUKS-encrypted LVM
 virtualization: none (bare metal)
 docker: Docker version 29.6.2, build dfc4efb
 compose: 5.3.1
@@ -73,6 +74,21 @@ stacks: doppar-fpm doppar-worker laravel symfony
 
 </details>
 
+### ApacheBench cross-check — `ab -n 50000 -c 1000`, no keep-alive
+
+> Mirrors the **older** vendor methodology (ApacheBench). A different load generator, and ab opens a **fresh connection per request** (no keep-alive), so throughput is dominated by connection setup/teardown and is frequently generator-limited. **These numbers are NOT comparable to the wrk tables above** — read them only across the stacks within this table. `req/s` is the median of the repeats; latency is ab's mean time per request; failures are the worst repeat.
+
+| Stack | Endpoint | req/s (median) | Mean latency | Failed requests |
+|---|---|---|---|---|
+| Doppar (PHP-FPM) | /json | 7,121 | 128.7 ms | 0 |
+| Doppar (PHP-FPM) | /db | 6,536 | 136.9 ms | 0 |
+| Laravel (PHP-FPM) | /json | 7,882 | 123.1 ms | 0 |
+| Laravel (PHP-FPM) | /db | 4,720 | 204.3 ms | 0 |
+| Symfony (PHP-FPM) | /json | 12,526 | 77.7 ms | 0 |
+| Symfony (PHP-FPM) | /db | 6,136 | 151.9 ms | 0 |
+| Doppar (FrankenPHP worker) ¹ | /json | 4,667 | 205.7 ms | 0 |
+| Doppar (FrankenPHP worker) ¹ | /db | 3,461 | 287.9 ms | 0 |
+
 ## Host: `server-20260722`
 
 ```
@@ -84,7 +100,8 @@ kernel: Linux 5.15.0-164-generic
 cpu: Intel(R) Xeon(R) CPU E5-2690 v2 @ 3.00GHz
 cpu_logical: 35
 mem_total: 189 GiB
-storage: VMware virtual disk, 100 GB (non-rotational per guest)
+mem_type: DDR3 (Ivy Bridge EP host platform; guest DMI shows synthetic values)
+storage: VMware virtual disk, 100 GB, backed by an Intel DC P3600 NVMe SSD (SSDPEDME012T4)
 virtualization: VMware VM (full), 35 vCPUs
 docker: Docker version 27.0.3, build 7d4bcd8
 compose: 2.28.1

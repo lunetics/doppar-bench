@@ -1,0 +1,55 @@
+ Container doppar-bench-ab-run-13849ac46023 Creating 
+ Container doppar-bench-ab-run-13849ac46023 Created 
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking nginx-doppar (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        nginx/1.27.5
+Server Hostname:        nginx-doppar
+Server Port:            80
+
+Document Path:          /json
+Document Length:        66 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   6.434 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      21900000 bytes
+HTML transferred:       3300000 bytes
+Requests per second:    7771.76 [#/sec] (mean)
+Time per request:       128.671 [ms] (mean)
+Time per request:       0.129 [ms] (mean, across all concurrent requests)
+Transfer rate:          3324.25 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    2   3.1      0      22
+Processing:    15  123  58.7     99     406
+Waiting:        2  122  59.0     99     402
+Total:         24  125  58.0    102     411
+
+Percentage of the requests served within a certain time (ms)
+  50%    102
+  66%    138
+  75%    160
+  80%    172
+  90%    208
+  95%    231
+  98%    284
+  99%    317
+ 100%    411 (longest request)

@@ -1,0 +1,55 @@
+ Container doppar-bench-ab-run-9fd98552ff1a Creating 
+ Container doppar-bench-ab-run-9fd98552ff1a Created 
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking nginx-symfony (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        nginx/1.27.5
+Server Hostname:        nginx-symfony
+Server Port:            80
+
+Document Path:          /json
+Document Length:        67 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   4.104 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      14650000 bytes
+HTML transferred:       3350000 bytes
+Requests per second:    12184.70 [#/sec] (mean)
+Time per request:       82.070 [ms] (mean)
+Time per request:       0.082 [ms] (mean, across all concurrent requests)
+Transfer rate:          3486.44 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    3   3.4      1      20
+Processing:    12   78  12.6     77     115
+Waiting:        2   77  12.6     76     115
+Total:         18   81  11.8     79     120
+
+Percentage of the requests served within a certain time (ms)
+  50%     79
+  66%     86
+  75%     90
+  80%     93
+  90%     97
+  95%    101
+  98%    105
+  99%    108
+ 100%    120 (longest request)

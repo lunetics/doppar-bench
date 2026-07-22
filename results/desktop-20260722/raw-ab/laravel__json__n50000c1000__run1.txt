@@ -1,0 +1,55 @@
+ Container doppar-bench-ab-run-65cfd12c6a28 Creating 
+ Container doppar-bench-ab-run-65cfd12c6a28 Created 
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking nginx-laravel (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        nginx/1.27.5
+Server Hostname:        nginx-laravel
+Server Port:            80
+
+Document Path:          /json
+Document Length:        67 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   6.546 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      14650000 bytes
+HTML transferred:       3350000 bytes
+Requests per second:    7638.35 [#/sec] (mean)
+Time per request:       130.918 [ms] (mean)
+Time per request:       0.131 [ms] (mean, across all concurrent requests)
+Transfer rate:          2185.58 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   2.2      0      17
+Processing:    16  129  18.4    128     199
+Waiting:        3  129  18.4    128     199
+Total:         17  129  17.3    129     199
+
+Percentage of the requests served within a certain time (ms)
+  50%    129
+  66%    135
+  75%    138
+  80%    141
+  90%    148
+  95%    155
+  98%    173
+  99%    181
+ 100%    199 (longest request)

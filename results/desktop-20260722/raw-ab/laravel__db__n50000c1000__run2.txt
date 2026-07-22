@@ -1,0 +1,55 @@
+ Container doppar-bench-ab-run-b8f1d628ff11 Creating 
+ Container doppar-bench-ab-run-b8f1d628ff11 Created 
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking nginx-laravel (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Completed 20000 requests
+Completed 25000 requests
+Completed 30000 requests
+Completed 35000 requests
+Completed 40000 requests
+Completed 45000 requests
+Completed 50000 requests
+Finished 50000 requests
+
+
+Server Software:        nginx/1.27.5
+Server Hostname:        nginx-laravel
+Server Port:            80
+
+Document Path:          /db
+Document Length:        177 bytes
+
+Concurrency Level:      1000
+Time taken for tests:   10.215 seconds
+Complete requests:      50000
+Failed requests:        0
+Total transferred:      20150000 bytes
+HTML transferred:       8850000 bytes
+Requests per second:    4894.58 [#/sec] (mean)
+Time per request:       204.308 [ms] (mean)
+Time per request:       0.204 [ms] (mean, across all concurrent requests)
+Transfer rate:          1926.28 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   2.3      0      20
+Processing:    16  202  25.0    197     275
+Waiting:        3  202  25.0    197     275
+Total:         23  202  23.6    197     276
+
+Percentage of the requests served within a certain time (ms)
+  50%    197
+  66%    206
+  75%    214
+  80%    218
+  90%    233
+  95%    241
+  98%    253
+  99%    261
+ 100%    276 (longest request)
