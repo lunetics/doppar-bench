@@ -139,6 +139,7 @@ stacks: doppar-fpm doppar-worker laravel laravel-worker symfony symfony-worker
 | Symfony (PHP-FPM) | **4,726** req/s | **4,637** req/s | **4,627** req/s |
 | Doppar (FrankenPHP worker) ¹ | **1,436** req/s | **970** req/s | **656** req/s |
 | Laravel (Octane · FrankenPHP) ¹ | **9,180** req/s | **9,369** req/s | **9,384** req/s |
+| Symfony (FrankenPHP worker) ¹ | **29,717** req/s | **30,922** req/s | **32,059** req/s |
 
 ### /db (ORM primary-key lookup)
 
@@ -149,6 +150,7 @@ stacks: doppar-fpm doppar-worker laravel laravel-worker symfony symfony-worker
 | Symfony (PHP-FPM) | **2,465** req/s | **2,443** req/s | **2,432** req/s |
 | Doppar (FrankenPHP worker) ¹ | **1,216** req/s | **905** req/s | **676** req/s |
 | Laravel (Octane · FrankenPHP) ¹ | **7,011** req/s | **7,007** req/s | **6,992** req/s |
+| Symfony (FrankenPHP worker) ¹ | **22,069** req/s | **22,268** req/s | **22,585** req/s |
 
 <details><summary>Detailed metrics (median req/s, latency, errors, spread)</summary>
 
@@ -184,6 +186,12 @@ stacks: doppar-fpm doppar-worker laravel laravel-worker symfony symfony-worker
 | Laravel (Octane · FrankenPHP) ¹ | /db | 2/50/20s | 7,011 | 7.1 ms | 0 | 6,930–7,032 |
 | Laravel (Octane · FrankenPHP) ¹ | /db | 4/200/30s | 7,007 | 28.5 ms | 0 | 6,920–7,028 |
 | Laravel (Octane · FrankenPHP) ¹ | /db | 8/500/60s | 6,992 | 70.8 ms | 0 | 6,929–7,003 |
+| Symfony (FrankenPHP worker) ¹ | /json | 2/50/20s | 29,717 | 1.7 ms | 0 | 29,638–29,821 |
+| Symfony (FrankenPHP worker) ¹ | /json | 4/200/30s | 30,922 | 6.4 ms | 0 | 30,905–31,213 |
+| Symfony (FrankenPHP worker) ¹ | /json | 8/500/60s | 32,059 | 15.4 ms | 0 | 31,900–32,744 |
+| Symfony (FrankenPHP worker) ¹ | /db | 2/50/20s | 22,069 | 2.3 ms | 0 | 21,831–22,116 |
+| Symfony (FrankenPHP worker) ¹ | /db | 4/200/30s | 22,268 | 8.9 ms | 0 | 22,211–22,393 |
+| Symfony (FrankenPHP worker) ¹ | /db | 8/500/60s | 22,585 | 21.9 ms | 0 | 22,373–22,682 |
 
 </details>
 

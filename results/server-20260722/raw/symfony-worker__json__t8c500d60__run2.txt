@@ -1,0 +1,13 @@
+Running 1m test @ http://symfony-worker/json
+  8 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    15.42ms    2.30ms 108.06ms   81.53%
+    Req/Sec     4.03k   246.26     4.49k    81.12%
+  Latency Distribution
+     50%   14.76ms
+     75%   16.44ms
+     90%   18.30ms
+     99%   22.60ms
+  1926638 requests in 1.00m, 477.72MB read
+Requests/sec:  32059.06
+Transfer/sec:      7.95MB
